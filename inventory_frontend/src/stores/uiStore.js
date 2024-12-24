@@ -9,9 +9,12 @@ export const useUiStore = defineStore('Ui', {
         modalComponent: null,
         modalProps: {}
     }),
+    getters: {
+        
+    },
     actions: {
-        async handleAsync(task, errorMessage = "Something went wrong") {
-            this.loading = true;
+        async handleAsync(task, errorMessage = "Something went wrong", loading = true) {
+            this.loading = loading;
             this.error = null;
 
             try {
@@ -89,6 +92,17 @@ export const useUiStore = defineStore('Ui', {
             this.modal = false;
             this.modalComponent = null;
             this.modalProps = {};
-        }
+        },
+
+        formatDate (date) {
+            return new Date(date).toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+            });
+        },
     }
 });

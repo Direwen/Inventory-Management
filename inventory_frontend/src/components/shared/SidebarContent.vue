@@ -11,8 +11,12 @@
         <!-- DIVIDER -->
         <div class="divider divider-base-300 mb-0"></div>
         <!-- INVENTORIES -->
-        <InventoriesDropdown />
-
+        <InventoriesDropdown v-if="!appStore.activeInventory" />
+        <section v-else class="flex flex-col gap-2">
+            <router-link :to="{name: 'User-Management', params: {id: appStore.activeInventory}}" class="no-underline">Users</router-link>
+            <router-link :to="{name: 'Product-Management', params: {id: appStore.activeInventory}}" class="no-underline">Inventory</router-link>
+            <router-link :to="{name: 'Logs', params: {id: appStore.activeInventory}}" class="no-underline">Logs</router-link>
+        </section>
     </section>
 
     <section class="flex flex-col gap-4">
@@ -29,6 +33,8 @@ import InventoriesDropdown from './InventoriesDropdown.vue';
 import LanguageSelector from '../widgets/LanguageSelector.vue';
 import CreateInventoryBtn from './CreateInventoryBtn.vue';
 import { useAuthStore } from '../../stores/authStore';
+import { useAppStore } from '../../stores/appStore';
 
 const authStore = useAuthStore();
+const appStore = useAppStore();
 </script>

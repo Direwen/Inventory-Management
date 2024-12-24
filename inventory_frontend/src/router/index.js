@@ -4,6 +4,9 @@ import Support from '../views/Support.vue';
 import Auth from '../views/Auth.vue';
 import Profile from '../views/Profile.vue';
 import Inventory from '../views/Inventory.vue';
+import UserManagement from '../views/UserManagement.vue';
+import ProductManagement from '../views/ProductManagement.vue';
+import Logs from '../views/Logs.vue';
 import { useAuthStore } from '../stores/authStore';
 import { useUiStore } from '../stores/uiStore';
 import { useAppStore } from '../stores/appStore';
@@ -27,7 +30,7 @@ const validateInventory = async (to, from, next) => {
     await appStore.loadInventories();
   }
   const exists = appStore.inventories.some(inv => inv.id == to.params.id);
-
+  console.log(appStore.inventories, exists)
   if (exists) {
     appStore.activeInventory = to.params.id;
     next();
@@ -42,12 +45,49 @@ const routes = [
   { path: '/support', component: Support },
   { path: '/auth', component: Auth, beforeEnter: requireUnauthenticated },
   { path: '/profile', component: Profile },
-  { path: '/inventory/:id', name: 'Inventory', component: Inventory, beforeEnter: validateInventory }
+  { 
+    path: '/inventory/:id', 
+    name: 'Inventory', 
+    redirect: to => {
+      return { name: 'User-Management', params: to.params };
+    },
+    beforeEnter: validateInventory,
+    children: [
+      {
+        path: 'user-management',
+        name: 'User-Management',
+        component: UserManagement, 
+      },
+      {
+        path: 'product-management',
+        name: 'Product-Management',
+        component: ProductManagement, 
+      },
+      {
+        path: 'logs',
+        name: 'Logs',
+        component: Logs, 
+      }
+    ]
+  }
 ];
+
+
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// Global guard to clear active inventory when leaving inventory routes
+router.beforeEach((to, from, next) => {
+  const appStore = useAppStore();
+  
+  // If navigating away from inventory routes, clear activeInventory
+  if (!to.path.startsWith('/inventory/')) {
+    if (appStore.activeInventory) appStore.activeInventory = null;
+  }
+  next();
 });
 
 export default router;

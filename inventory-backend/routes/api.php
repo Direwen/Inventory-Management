@@ -64,7 +64,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         // Collaborator management routes
         Route::prefix('/{inventory}/collabs')->group(function () {
             // Route::get('/', [InventoryCollaboratorController::class, 'index'])->name('inventory_collaborator.index');
-            // Route::get('/', [InventoryCollaboratorController::class, 'show'])->name('inventory_collaborator.show');
+            Route::get('/', [InventoryCollaboratorController::class, 'show'])->name('inventory_collaborator.show');
             Route::post('/', [InventoryCollaboratorController::class, 'store'])->middleware('can:manageRoles,inventory')->name('inventory_collaborator.store');
             Route::put('/', [InventoryCollaboratorController::class, 'update'])->middleware('can:manageRoles,inventory')->name('inventory_collaborator.update');
             Route::delete('/', [InventoryCollaboratorController::class, 'destroy'])->middleware('can:manageRoles,inventory')->name('inventory_collaborator.destroy');

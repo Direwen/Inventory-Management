@@ -15,74 +15,16 @@ class InventoryCollaboratorController extends Controller
 {
     use ApiResponseTrait;
 
-    // Helper method to ensure user is authorized as admin
-    private function ensureAdmin($collaborators)
-    {
-        $admin = $collaborators->firstWhere('role', 'Admin');
-        if (auth()->id() != $admin->user_id) {
-            return $this->errorResponse("You are not authorized for this action");
-        }
-        return null;
+    public function show(Inventory $inventory) {
+        // Eager load the 'user' relationship along with 'collaborators'
+        $inventoryWithUsers = $inventory->load('collaborators.user');
+    
+        return $this->successResponse(
+            data: $inventoryWithUsers->collaborators,
+            message: "Fetched collaborators and their users for the inventory"
+        );
     }
-
-    // Helper method to get the collaborator to update
-    private function getCollaboratorToUpdate($collaborators, $userId)
-    {
-        return $collaborators->firstWhere('user_id', $userId);
-    }
-
-    // Helper method to handle role changes
-    private function handleRoleChange($collaborator, $admin, $newRole, $collaborators)
-    {
-        switch (strtolower($collaborator->role)) {
-            case 'employee':
-                if ($newRole === 'manager') {
-                    $collaborator->update(['role' => 'manager']);
-                } elseif ($newRole === 'admin') {
-                    $admin->update(['role' => 'employee']);
-                    $collaborator->update(['role' => 'admin']);
-                } else {
-                    return $this->errorResponse("Invalid role change.");
-                }
-                break;
-
-            case 'manager':
-                if ($newRole === 'admin') {
-                    $admin->update(['role' => 'manager']);
-                    $collaborator->update(['role' => 'admin']);
-                } elseif ($newRole === 'employee') {
-                    $collaborator->update(['role' => 'employee']);
-                } else {
-                    return $this->errorResponse("Invalid role change.");
-                }
-                break;
-
-            case 'admin':
-                if ($newRole === 'manager') {
-                    $manager = $collaborators->firstWhere('role', 'Manager');
-                    if (!$manager) {
-                        return $this->errorResponse("No manager available to promote to admin.");
-                    }
-                    $manager->update(['role' => 'admin']);
-                    $collaborator->update(['role' => 'manager']);
-                } elseif ($newRole === 'employee') {
-                    $manager = $collaborators->firstWhere('role', 'Manager');
-                    if (!$manager) {
-                        return $this->errorResponse("Cannot remove admin without a manager to promote to admin.");
-                    }
-                    $manager->update(['role' => 'admin']);
-                    $collaborator->update(['role' => 'employee']);
-                } else {
-                    return $this->errorResponse("Invalid role change.");
-                }
-                break;
-
-            default:
-                return $this->errorResponse("Invalid role for collaborator.");
-        }
-
-        return null;
-    }
+    
 
     public function store(StoreCollaboratorRequest $request, Inventory $inventory)
     {
@@ -216,5 +158,74 @@ class InventoryCollaboratorController extends Controller
             
             return $this->errorResponse("Error removing collaborator: " . $e->getMessage());
         }
+    }
+
+    // Helper method to ensure user is authorized as admin
+    private function ensureAdmin($collaborators)
+    {
+        $admin = $collaborators->firstWhere('role', 'Admin');
+        if (auth()->id() != $admin->user_id) {
+            return $this->errorResponse("You are not authorized for this action");
+        }
+        return null;
+    }
+
+    // Helper method to get the collaborator to update
+    private function getCollaboratorToUpdate($collaborators, $userId)
+    {
+        return $collaborators->firstWhere('user_id', $userId);
+    }
+
+    // Helper method to handle role changes
+    private function handleRoleChange($collaborator, $admin, $newRole, $collaborators)
+    {
+        switch (strtolower($collaborator->role)) {
+            case 'employee':
+                if ($newRole === 'manager') {
+                    $collaborator->update(['role' => 'manager']);
+                } elseif ($newRole === 'admin') {
+                    $admin->update(['role' => 'employee']);
+                    $collaborator->update(['role' => 'admin']);
+                } else {
+                    return $this->errorResponse("Invalid role change.");
+                }
+                break;
+
+            case 'manager':
+                if ($newRole === 'admin') {
+                    $admin->update(['role' => 'manager']);
+                    $collaborator->update(['role' => 'admin']);
+                } elseif ($newRole === 'employee') {
+                    $collaborator->update(['role' => 'employee']);
+                } else {
+                    return $this->errorResponse("Invalid role change.");
+                }
+                break;
+
+            case 'admin':
+                if ($newRole === 'manager') {
+                    $manager = $collaborators->firstWhere('role', 'Manager');
+                    if (!$manager) {
+                        return $this->errorResponse("No manager available to promote to admin.");
+                    }
+                    $manager->update(['role' => 'admin']);
+                    $collaborator->update(['role' => 'manager']);
+                } elseif ($newRole === 'employee') {
+                    $manager = $collaborators->firstWhere('role', 'Manager');
+                    if (!$manager) {
+                        return $this->errorResponse("Cannot remove admin without a manager to promote to admin.");
+                    }
+                    $manager->update(['role' => 'admin']);
+                    $collaborator->update(['role' => 'employee']);
+                } else {
+                    return $this->errorResponse("Invalid role change.");
+                }
+                break;
+
+            default:
+                return $this->errorResponse("Invalid role for collaborator.");
+        }
+
+        return null;
     }
 }

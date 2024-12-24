@@ -4,8 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Inventory;
 use App\Models\InventoryCollaborator;
+use App\Models\Product;
+use App\Models\Stock;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use DB;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -76,6 +79,29 @@ class DatabaseSeeder extends Seeder
             "user_id" => $user5->id,
             "role" => "employee"
         ]);
+
+        $products = [
+            ["name" => "Product 1", "sku" => "SKU001", "initial_qty" => 10],
+            ["name" => "Product 2", "sku" => "SKU002", "initial_qty" => 20],
+            ["name" => "Product 3", "sku" => "SKU003", "initial_qty" => 30],
+            ["name" => "Product 4", "sku" => "SKU004", "initial_qty" => 40],
+        ];
+
+        foreach ($products as $details) {
+            DB::transaction(function () use ($details, $inventory) {
+                $product = Product::create([
+                    'name' => $details["name"],
+                    'sku' => $details["sku"],
+                    'inventory_id' => $inventory->id 
+                ]);
+    
+                Stock::create([
+                    'product_id' => $product->id,
+                    'current_stock' => $details["initial_qty"] ?? 0
+                ]);
+            });
+        }
+
 
     }
 }
