@@ -35,11 +35,11 @@ class Invitation extends Model
 
     public function inventory()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(Inventory::class);
     }
 
     public function inviter()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }

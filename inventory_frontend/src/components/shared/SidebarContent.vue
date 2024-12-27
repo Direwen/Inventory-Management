@@ -15,7 +15,8 @@
         <section v-else class="flex flex-col gap-2">
             <router-link :to="{name: 'User-Management', params: {id: appStore.activeInventory}}" class="no-underline">Users</router-link>
             <router-link :to="{name: 'Product-Management', params: {id: appStore.activeInventory}}" class="no-underline">Inventory</router-link>
-            <router-link :to="{name: 'Logs', params: {id: appStore.activeInventory}}" class="no-underline">Logs</router-link>
+            <router-link :to="{name: 'Logs', params: {id: appStore.activeInventory}}" class="no-underline">Audit Logs</router-link>
+            <router-link :to="{name: 'Invitations', params: {id: appStore.activeInventory}}" class="no-underline">Invitations</router-link>
         </section>
     </section>
 

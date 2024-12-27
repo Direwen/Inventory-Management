@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Invitation;
 use App\Models\Log;
+use Notification;
 
 class InvitationObserver
 {

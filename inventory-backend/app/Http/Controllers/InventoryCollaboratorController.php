@@ -7,6 +7,7 @@ use App\Http\Requests\DestroyCollaboratorRequest;
 use App\Http\Requests\StoreCollaboratorRequest;
 use App\Http\Requests\UpdateCollaboratorRequest;
 use App\Models\Inventory;
+use App\Models\InventoryCollaborator;
 use App\Traits\ApiResponseTrait;
 use DB;
 use Exception;
@@ -93,7 +94,7 @@ class InventoryCollaboratorController extends Controller
             DB::commit();
 
             return $this->successResponse(
-                data: $inventory->load('collaborators'),
+                data: $inventory->load('collaborators.user'),
                 message: "Collaborator updated successfully."
             );
         } catch (Exception $e) {
@@ -102,9 +103,9 @@ class InventoryCollaboratorController extends Controller
         }
     }
 
-    public function destroy(DestroyCollaboratorRequest $request, Inventory $inventory)
+    public function destroy(Inventory $inventory, InventoryCollaborator $collab)
     {
-        $details = $request->validated();
+        // $details = $request->validated();
 
         DB::beginTransaction();
 
@@ -126,25 +127,25 @@ class InventoryCollaboratorController extends Controller
             // Find the manager
             $manager = $collaborators->firstWhere('role', 'Manager');
 
-            // Find the collaborator to delete
-            $collaboratorToDelete = $collaborators->firstWhere('user_id', $details['user_id']);
+            // // Find the collaborator to delete
+            // $collaboratorToDelete = $collaborators->firstWhere('user_id', $details['user_id']);
 
-            // If the collaborator to delete is not found
-            if (!$collaboratorToDelete) {
-                return $this->errorResponse("Collaborator not found");
-            }
+            // // If the collaborator to delete is not found
+            // if (!$collaboratorToDelete) {
+            //     return $this->errorResponse("Collaborator not found");
+            // }
 
             // Ensure the admin cannot leave without a manager to replace them
-            if (strcasecmp($collaboratorToDelete->role, 'admin') === 0 && empty($manager)) {
+            if (strcasecmp($collab->role, 'admin') === 0 && empty($manager)) {
                 return $this->errorResponse("Cannot delete the admin without a manager to replace them.");
             }
 
             // Promote the manager to admin if deleting the current admin
-            if (strcasecmp($collaboratorToDelete->role, 'admin') === 0 && !empty($manager)) {
+            if (strcasecmp($collab->role, 'admin') === 0 && !empty($manager)) {
                 $manager->update(['role' => 'admin']);
             }
             // Delete the collaborator
-            $collaboratorToDelete->delete();
+            $collab->delete();
 
             DB::commit();
 
@@ -179,12 +180,21 @@ class InventoryCollaboratorController extends Controller
     // Helper method to handle role changes
     private function handleRoleChange($collaborator, $admin, $newRole, $collaborators)
     {
+        $existingManager = $collaborators->firstWhere('role', 'Manager');
+
         switch (strtolower($collaborator->role)) {
             case 'employee':
                 if ($newRole === 'manager') {
+                    // If there is an existing manager, demote them to employee
+                    if ($existingManager) {
+                        $existingManager->update(['role' => 'employee']);
+                    }
+                    // Promote employee to manager
                     $collaborator->update(['role' => 'manager']);
                 } elseif ($newRole === 'admin') {
+                    // If there is an existing admin, demote them to employee
                     $admin->update(['role' => 'employee']);
+                    // Promote employee to admin
                     $collaborator->update(['role' => 'admin']);
                 } else {
                     return $this->errorResponse("Invalid role change.");
@@ -193,9 +203,12 @@ class InventoryCollaboratorController extends Controller
 
             case 'manager':
                 if ($newRole === 'admin') {
+                    // If promoting to admin, demote curretn admin to manager
                     $admin->update(['role' => 'manager']);
+                    // Promote current manager to admin
                     $collaborator->update(['role' => 'admin']);
                 } elseif ($newRole === 'employee') {
+                    // Demote manager to employee
                     $collaborator->update(['role' => 'employee']);
                 } else {
                     return $this->errorResponse("Invalid role change.");
@@ -204,18 +217,22 @@ class InventoryCollaboratorController extends Controller
 
             case 'admin':
                 if ($newRole === 'manager') {
-                    $manager = $collaborators->firstWhere('role', 'Manager');
-                    if (!$manager) {
+                    // Ensure there is the existing manager to promote to admin
+                    if (!$existingManager) {
                         return $this->errorResponse("No manager available to promote to admin.");
                     }
-                    $manager->update(['role' => 'admin']);
+                    // Promote current manager to admin
+                    $existingManager->update(['role' => 'admin']);
+                    // Demote current admin to manager
                     $collaborator->update(['role' => 'manager']);
                 } elseif ($newRole === 'employee') {
-                    $manager = $collaborators->firstWhere('role', 'Manager');
-                    if (!$manager) {
+                    // Ensure there is the existing manager to promote to admin
+                    if (!$existingManager) {
                         return $this->errorResponse("Cannot remove admin without a manager to promote to admin.");
                     }
-                    $manager->update(['role' => 'admin']);
+                    // Promote current manager to admin
+                    $existingManager->update(['role' => 'admin']);
+                    // Demote current admin to employee
                     $collaborator->update(['role' => 'employee']);
                 } else {
                     return $this->errorResponse("Invalid role change.");

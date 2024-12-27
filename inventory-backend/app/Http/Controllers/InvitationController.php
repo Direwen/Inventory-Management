@@ -27,6 +27,20 @@ class InvitationController extends Controller
         );
     }
 
+    public function indexForMe() {
+        $invitations = Invitation::with(['inventory', 'inviter'])  // Eager load first
+            ->where("invitee_email", auth()->user()->email)
+            ->where("status", "pending")
+            ->get();
+    
+        return $this->successResponse(
+            data: $invitations ?? [],
+            message: "Pending invitations for the user"
+        );
+    }
+    
+    
+
     public function show(Inventory $inventory, Invitation $invitation)
     {
 

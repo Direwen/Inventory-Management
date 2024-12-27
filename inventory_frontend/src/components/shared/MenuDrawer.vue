@@ -4,7 +4,7 @@
 
     <div class="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col items-center justify-between mb-0 h-screen overflow-y-scroll">
+        <div class="drawer-content flex flex-col items-center justify-between mb-0 h-screen overflow-y-scroll hide-scrollbar">
             <!-- Page content here -->
             <Navbar>
                 <template #default>

@@ -10,6 +10,7 @@ import Logs from '../views/Logs.vue';
 import { useAuthStore } from '../stores/authStore';
 import { useUiStore } from '../stores/uiStore';
 import { useAppStore } from '../stores/appStore';
+import Invitations from '../views/Invitations.vue';
 
 const requireUnauthenticated = (to, from, next) => {
   const authStore = useAuthStore();
@@ -67,6 +68,11 @@ const routes = [
         path: 'logs',
         name: 'Logs',
         component: Logs, 
+      },
+      {
+        path: 'invitations',
+        name: 'Invitations',
+        component: Invitations,
       }
     ]
   }

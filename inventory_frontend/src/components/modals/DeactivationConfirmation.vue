@@ -16,7 +16,7 @@
         </template>
 
         <template #footer>
-            <button class="btn btn-error">Confirm Deactivation</button>
+            <button class="btn">Confirm Deactivation</button>
         </template>
     </LayoutModalContent>
 </template>

@@ -15,7 +15,7 @@
 
             <section v-else-if="useAuthStore().isActive && useAppStore().inventories">
                 <section v-for="each in useAppStore().inventories" class="flex flex-col gap-1">
-                    <span class="text-xs lg:text-sm font-semibold tracking-tighter">{{ formatRelativeDate(each.updated_at) }}</span>
+                    <span class="text-xs lg:text-sm font-semibold tracking-tighter">{{ uiStore.formatRelativeDate(each.updated_at) }}</span>
                     <router-link :to="{name: 'Inventory', params: {id: each.id}}" class="truncate no-underline cursor-pointer hover:bg-base-100 px-3 py-1 rounded transition-all ease-in-out duration-300">{{each.name}}</router-link>
                 </section>
             </section>
@@ -29,16 +29,7 @@
 import { useAuthStore } from '../../stores/authStore';
 import { useAppStore } from '../../stores/appStore';
 import { formatDistanceToNow, isToday, isYesterday } from 'date-fns';
+import { useUiStore } from '../../stores/uiStore';
 
-const formatRelativeDate = (timestamp) => {
-  const date = new Date(timestamp);
-
-  if (isToday(date)) {
-    return 'Today';
-  } else if (isYesterday(date)) {
-    return 'Yesterday';
-  } else {
-    return formatDistanceToNow(date, { addSuffix: true });
-  }
-};
+const uiStore = useUiStore();
 </script>

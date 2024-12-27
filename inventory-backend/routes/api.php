@@ -6,6 +6,7 @@ use App\Http\Controllers\InventoryCollaboratorController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OutboundController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProductController;
@@ -40,6 +41,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('user')->group(function () {
         // View the current user's profile
         Route::get('/', [UserController::class, 'show'])->name('user.me');
+        // Get User Invitations
+        Route::get("/invitations", [InvitationController::class, 'indexForMe'])->name('user.invitations');
+        // Get User Notifications
+        Route::get("/notifications", [NotificationController::class, 'index'])->name('notifications.index');
+        // Mark User Notifications As Read
+        Route::put("/notifications", [NotificationController::class, 'update'])->name('notifications.update');
         // Update the user's profile
         Route::put('/update', [UserController::class, 'update'])->name('user.update');
         // Delete the user's account
@@ -67,7 +74,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/', [InventoryCollaboratorController::class, 'show'])->name('inventory_collaborator.show');
             Route::post('/', [InventoryCollaboratorController::class, 'store'])->middleware('can:manageRoles,inventory')->name('inventory_collaborator.store');
             Route::put('/', [InventoryCollaboratorController::class, 'update'])->middleware('can:manageRoles,inventory')->name('inventory_collaborator.update');
-            Route::delete('/', [InventoryCollaboratorController::class, 'destroy'])->middleware('can:manageRoles,inventory')->name('inventory_collaborator.destroy');
+            Route::delete('/{collab}', [InventoryCollaboratorController::class, 'destroy'])->middleware('can:manageRoles,inventory')->name('inventory_collaborator.destroy');
         });
             
         // Product-related routes within an inventory
@@ -81,7 +88,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::post('/{product}/outbound', [OutboundController::class, 'store'])->middleware('can:adjustStock,inventory')->name("outbounds.store");
         });
 
-        // Invitation related routes
         Route::prefix("/{inventory}/invitations")->group(function () {
             Route::get("/", [InvitationController::class, "index"])->name("inventories.index");
             Route::get("/{invitation}", [InvitationController::class, "show"])->name("inventories.show");

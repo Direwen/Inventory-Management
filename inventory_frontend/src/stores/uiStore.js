@@ -1,3 +1,4 @@
+import { formatDistanceToNow, isToday, isYesterday } from 'date-fns';
 import { defineStore } from 'pinia';
 import Toastify from 'toastify-js';
 
@@ -10,16 +11,16 @@ export const useUiStore = defineStore('Ui', {
         modalProps: {}
     }),
     getters: {
-        
+
     },
     actions: {
-        async handleAsync(task, errorMessage = "Something went wrong", loading = true) {
+        async handleAsync(task, errorMessage = "Something went wrong", loading = true, toast = true) {
             this.loading = loading;
             this.error = null;
 
             try {
                 const result = await task();
-                this.addNotification("success", "Operation successful!");
+                if (toast) this.addNotification("success", "Operation successful!");
                 return result;
             } catch (error) {
                 const message =
@@ -80,12 +81,10 @@ export const useUiStore = defineStore('Ui', {
             }
         },
 
-        openModal(component, props={}) {
+        openModal(component, props = {}) {
             this.modal = true;
             this.modalComponent = component;
             this.modalProps = props;
-            console.log(this.modalComponent);
-            console.log(this.modalProps);
         },
 
         closeModal() {
@@ -94,7 +93,7 @@ export const useUiStore = defineStore('Ui', {
             this.modalProps = {};
         },
 
-        formatDate (date) {
+        formatDate(date) {
             return new Date(date).toLocaleString('en-US', {
                 year: 'numeric',
                 month: '2-digit',
@@ -104,5 +103,44 @@ export const useUiStore = defineStore('Ui', {
                 hour12: true,
             });
         },
+
+        formatRelativeDate(timestamp) {
+            const date = new Date(timestamp);
+
+            if (isToday(date)) {
+                return 'Today';
+            } else if (isYesterday(date)) {
+                return 'Yesterday';
+            } else {
+                return formatDistanceToNow(date, { addSuffix: true });
+            }
+        },
+
+        formatRelativeDateTime(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+
+            const isSameDay = (d1, d2) => d1.toDateString() === d2.toDateString();
+
+            if (isSameDay(date, now)) {
+                // Show time for today
+                return `Today at ${date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                })}`;
+            } else if (isYesterday(date)) {
+                // Show time for yesterday
+                return `Yesterday at ${date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                })}`;
+            } else {
+                const differenceInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+                return `${differenceInDays} days ago`;
+            }
+        }
+
     }
 });

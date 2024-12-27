@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             'password' => "asdasd123",
             'email_verified_at' => now()
         ]);
-        
+
         $user2 = User::factory()->create([
             'email' => 'bot2@gmail.com',
             'password' => "asdasd123",
@@ -80,27 +80,31 @@ class DatabaseSeeder extends Seeder
             "role" => "employee"
         ]);
 
-        $products = [
-            ["name" => "Product 1", "sku" => "SKU001", "initial_qty" => 10],
-            ["name" => "Product 2", "sku" => "SKU002", "initial_qty" => 20],
-            ["name" => "Product 3", "sku" => "SKU003", "initial_qty" => 30],
-            ["name" => "Product 4", "sku" => "SKU004", "initial_qty" => 40],
-        ];
+        $products = [];
+
+        for ($i = 1; $i <= 20; $i++) {
+            $products[] = [
+                "name" => "Product $i",
+                "sku" => "SKU" . str_pad($i, 3, '0', STR_PAD_LEFT),
+                "initial_qty" => rand(10, 50) // Random initial quantity between 10 and 50
+            ];
+        }
 
         foreach ($products as $details) {
             DB::transaction(function () use ($details, $inventory) {
                 $product = Product::create([
                     'name' => $details["name"],
                     'sku' => $details["sku"],
-                    'inventory_id' => $inventory->id 
+                    'inventory_id' => $inventory->id
                 ]);
-    
+
                 Stock::create([
                     'product_id' => $product->id,
                     'current_stock' => $details["initial_qty"] ?? 0
                 ]);
             });
         }
+
 
 
     }
