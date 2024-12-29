@@ -14,7 +14,7 @@ class LogController extends Controller
 
     public function index(Inventory $inventory)
     {
-        $logs = $inventory->logs()->paginate(10);
+        $logs = $inventory->logs()->with("user")->latest()->paginate(10);
 
         return $this->successResponse(
             data: $logs,

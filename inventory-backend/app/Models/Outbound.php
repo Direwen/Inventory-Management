@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Observers\OutboundObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy([OutboundObserver::class])]
 class Outbound extends Model
 {
     protected $fillable = [

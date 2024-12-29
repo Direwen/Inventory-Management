@@ -19,7 +19,7 @@ class InvitationController extends Controller
     public function index(Inventory $inventory)
     {
 
-        $invitations = $inventory->invitations()->paginate(10);
+        $invitations = $inventory->invitations()->latest()->paginate(10);
 
         return $this->successResponse(
             data: $invitations,

@@ -19,17 +19,43 @@ class ProductController extends Controller
 
     private $PREFIX = "PROD";
 
-    public function index(Inventory $inventory)
+    public function index(Inventory $inventory, Request $request)
     {
-        $products = $inventory->products()->with('stock')->paginate(10);
-
+        $request->validate([
+            'start' => ['nullable', 'date'],
+            'end' => ['nullable', 'date', 'after:start'], 
+        ]);
+    
+        $search = $request->query('search');
+        $startDate = $request->query('start');
+        $endDate = $request->query('end');
+    
+        $query = $inventory->products()->with('stock');
+    
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%"); 
+        }
+    
+        if ($startDate) {
+            $query->whereHas('stock', function ($q) use ($startDate) {
+                $q->whereDate('updated_at', '>=', $startDate);
+            });
+        }
+    
+        if ($endDate) {
+            $query->whereHas('stock', function ($q) use ($endDate) {
+                $q->whereDate('updated_at', '<=', $endDate);
+            });
+        }
+    
+        $products = $query->latest()->paginate(10);
+    
         return $this->successResponse(
-            data: $products, // Return paginated data
+            data: $products,
             message: "Paginated products of the inventory '{$inventory->name}'"
         );
     }
-
-
     public function show(Inventory $inventory, Product $product)
     {
         return $this->successResponse(
@@ -50,15 +76,15 @@ class ProductController extends Controller
                 $product = Product::create([
                     'name' => $details["name"],
                     'sku' => $sku,
-                    'inventory_id' => $inventory->id 
+                    'inventory_id' => $inventory->id
                 ]);
-    
+
                 Stock::create([
                     'product_id' => $product->id,
                     'current_stock' => $details["initial_qty"] ?? 0
                 ]);
             });
-            
+
             return $this->successResponse(
                 message: "Created a product for the '{$inventory->name}' inventory"
             );
@@ -85,7 +111,7 @@ class ProductController extends Controller
     {
         try {
             $product->delete();
-            
+
             return $this->successResponse(
                 message: "Deleted the product"
             );

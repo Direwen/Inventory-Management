@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Observers\InboundObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy([InboundObserver::class])]
 class Inbound extends Model
 {
     protected $fillable = [
