@@ -39,7 +39,7 @@
                 <tr v-for="each in appStore.collabs" :key="each.id" :recordId="each.id" :userId="each.user_id"
                     class="hover min-w-fit" :class="{ 'bg-base-200': each.user.email == authStore.user.email }">
                     <th>{{ each.user_id }}</th>
-                    <td>{{ each.user.name ?? 'N/A' }}</td>
+                    <td>{{ each.user?.name || 'N/A' }}</td>
                     <td>{{ each.user.email }}</td>
                     <td>
                         <RoleSelector :userId="each.user_id" :currentRole="each.role" :email="each.user.email" />

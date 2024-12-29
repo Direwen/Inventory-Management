@@ -10,17 +10,20 @@
 </template>
 
 <script setup>
+import { useAppStore } from '../../stores/appStore';
 import { useUiStore } from '../../stores/uiStore';
 import Delete from '../modals/Delete.vue';
 
 const props = defineProps(["email", "recordId"]);
 const uiStore = useUiStore();
+const appStore = useAppStore();
 
 const handleDelete = () => {
     uiStore.openModal(Delete, {
         entityName: props.email,
         entityToDelete: props.recordId,
-        entityType: 'user'
+        entityType: 'user',
+        onConfirm: appStore.removeUser
     });
 };
 </script>

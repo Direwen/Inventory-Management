@@ -68,8 +68,6 @@ const send = async () => {
         return;
     }
 
-    console.log(expiryDate.value);
-
     isLoading.value = true;
     try {
         await appStore.sendInvitation(email.value, expiryDate.value);

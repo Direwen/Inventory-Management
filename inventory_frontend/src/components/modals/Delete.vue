@@ -27,12 +27,13 @@ import LayoutModalContent from '../../layouts/LayoutModalContent.vue';
 import { useAppStore } from '../../stores/appStore';
 import { useUiStore } from '../../stores/uiStore';
 
-const props = defineProps(["entityToDelete", "entityType", "entityName"]);
+const props = defineProps(["entityToDelete", "entityType", "entityName", "onConfirm"]);
 const appStore = useAppStore();
 const uiStore = useUiStore();
 
 const confirm = () => {
-    appStore.removeUser(props.entityToDelete);
+    props.onConfirm(props.entityToDelete);
+    // appStore.removeUser(props.entityToDelete);
     uiStore.closeModal();
 }
 </script>

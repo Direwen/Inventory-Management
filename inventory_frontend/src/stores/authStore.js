@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axiosInstance from '../axios/config';
 import { useUiStore } from './uiStore';
+import { useAppStore } from './appStore';
 
 export const useAuthStore = defineStore('Auth', {
     state: () => ({
@@ -9,15 +10,15 @@ export const useAuthStore = defineStore('Auth', {
     }),
     actions: {
         async login(email, password) {
-            const uiStore = useUiStore();
 
-            return await uiStore.handleAsync(async () => {
+            return await useUiStore().handleAsync(async () => {
                 const res = await axiosInstance.post("/auth/login", {
                     "email": email,
                     "password": password
                 });
 
                 this.saveUserData(res.data.data.user, res.data.data.token);
+                useAppStore().loadEssentialData();
 
             }, "Failed to login");
         },
@@ -89,6 +90,7 @@ export const useAuthStore = defineStore('Auth', {
             return await uiStore.handleAsync(async () => {
                 await axiosInstance.post("/auth/logout");
                 this.removeUserData();
+                useAppStore().resetState();
             }, "Failed to logout");
         },
 

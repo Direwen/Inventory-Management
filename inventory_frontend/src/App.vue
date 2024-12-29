@@ -17,8 +17,7 @@ const authStore = useAuthStore();
 onMounted(async () => {
     await authStore.loadUser();
     if (authStore.isActive) {
-        appStore.loadInventories();
-        appStore.loadNotifications();
+        appStore.loadEssentialData();
     }
 })
 </script>

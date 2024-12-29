@@ -31,7 +31,6 @@ const validateInventory = async (to, from, next) => {
     await appStore.loadInventories();
   }
   const exists = appStore.inventories.some(inv => inv.id == to.params.id);
-  console.log(appStore.inventories, exists)
   if (exists) {
     appStore.activeInventory = to.params.id;
     next();
