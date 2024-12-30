@@ -26,14 +26,16 @@
 import LayoutModalContent from '../../layouts/LayoutModalContent.vue';
 import { useAppStore } from '../../stores/appStore';
 import { useUiStore } from '../../stores/uiStore';
+import { useRouter } from 'vue-router';
 
-const props = defineProps(["entityToDelete", "entityType", "entityName", "onConfirm"]);
+const props = defineProps(["entityToDelete", "entityType", "entityName", "onConfirm", "routerRequired"]);
 const appStore = useAppStore();
 const uiStore = useUiStore();
+const router = useRouter();
 
 const confirm = () => {
-    props.onConfirm(props.entityToDelete);
-    // appStore.removeUser(props.entityToDelete);
+    if (props.routerRequired) props.onConfirm(props.entityToDelete, router);
+    else props.onConfirm(props.entityToDelete);
     uiStore.closeModal();
 }
 </script>

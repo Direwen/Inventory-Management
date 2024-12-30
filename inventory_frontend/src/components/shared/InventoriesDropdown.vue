@@ -1,35 +1,79 @@
 <template>
-    <div class="collapse">
-        <input type="checkbox" />
-        <div class="collapse-title p-0 flex justify-between items-center font-bold">
-            <span>Inventories</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    <div class="relative">
+        <button @click="toggleDropdown" class="w-full flex justify-between items-center">
+            <span class="font-semibold">Inventories</span>
+            <svg :class="{ 'rotate-180': isOpen }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor" class="size-6 transition-transform">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 15l-7.5-7.5L4.5 15" />
             </svg>
+        </button>
 
-        </div>
-        <div class="collapse-content px-1 overflow-hidden">
-            <p v-if="!useAuthStore().isActive" class="truncate my-0 text-center">Please log in to continue</p>
+        <div v-show="isOpen" class="absolute w-full z-10">
+            <p v-if="!authStore.isActive" class="py-2 text-center text-gray-500">Please log in to continue</p>
 
-            <section v-else-if="useAuthStore().isActive && useAppStore().inventories">
-                <section v-for="each in useAppStore().inventories" class="flex flex-col gap-1">
-                    <span class="text-xs lg:text-sm font-semibold tracking-tighter">{{ uiStore.formatRelativeDate(each.updated_at) }}</span>
-                    <router-link :to="{name: 'Inventory', params: {id: each.id}}" class="truncate no-underline cursor-pointer hover:bg-base-100 px-3 py-1 rounded transition-all ease-in-out duration-300">{{each.name}}</router-link>
-                </section>
+            <section v-else-if="appStore.inventories?.length">
+                <div v-for="(group, key) in groupedInventories" :key="key" v-show="group.length != 0" class="mb-8">
+                    <h4 class="text-xs font-semibold ">{{ key }}</h4>
+                    <router-link v-for="each in group" :key="each.id"
+                        :to="{ name: 'Inventory', params: { id: each.id } }"
+                        class="block no-underline mb-[2px] truncate text-sm py-2 hover:bg-base-300 rounded px-4">
+                        {{ each.name }}
+                    </router-link>
+                </div>
             </section>
-            
-            <p v-else class="truncate my-0 text-center">No Inventories</p>
+
+            <p v-else class="py-2 text-center text-gray-500">No Inventories</p>
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
 import { useAuthStore } from '../../stores/authStore';
 import { useAppStore } from '../../stores/appStore';
-import { formatDistanceToNow, isToday, isYesterday } from 'date-fns';
 import { useUiStore } from '../../stores/uiStore';
 
+const isOpen = ref(true);
+const authStore = useAuthStore();
+const appStore = useAppStore();
 const uiStore = useUiStore();
+
+const toggleDropdown = () => {
+    isOpen.value = !isOpen.value;
+};
+
+// Group inventories by usage date
+const groupedInventories = computed(() => {
+    const today = [];
+    const thisWeek = [];
+    const older = [];
+
+    const now = new Date();
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    appStore.inventories.forEach((inventory) => {
+        const updatedAt = new Date(inventory.updated_at);
+        const diffDays = Math.floor((now - updatedAt) / oneDay);
+
+        if (diffDays === 0) {
+            today.push(inventory);
+        } else if (diffDays <= 7) {
+            thisWeek.push(inventory);
+        } else {
+            older.push(inventory);
+        }
+    });
+
+    return {
+        'Today': today,
+        'This Week': thisWeek,
+        'Older': older
+    };
+});
 </script>
+
+<style scoped>
+.rotate-180 {
+    transform: rotate(180deg);
+}
+</style>

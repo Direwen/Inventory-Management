@@ -30,9 +30,10 @@ const validateInventory = async (to, from, next) => {
   if (!appStore.inventories) {
     await appStore.loadInventories();
   }
-  const exists = appStore.inventories.some(inv => inv.id == to.params.id);
-  if (exists) {
-    appStore.activeInventory = to.params.id;
+
+  const targetInventory = appStore.inventories.find(inv => inv.id == to.params.id);
+  if (targetInventory) {
+    appStore.activeInventory = targetInventory;
     next();
   } else {
     uiStore.addNotification("error", "Invalid Inventory");
@@ -90,7 +91,9 @@ router.beforeEach((to, from, next) => {
   
   // If navigating away from inventory routes, clear activeInventory
   if (!to.path.startsWith('/inventory/')) {
-    if (appStore.activeInventory) appStore.activeInventory = null;
+    if (appStore.activeInventory) {
+      appStore.resetActiveInventoryData();
+    }
   }
   next();
 });

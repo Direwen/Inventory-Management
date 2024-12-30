@@ -50,9 +50,60 @@ export const useAppStore = defineStore('App', {
 
     },
 
+    async createInventory(name, description, stockThreshold) {
+      return await useUiStore().handleAsync(async () => {
+
+        const res = await axiosInstance.post(`/inventories`, {
+          name: name,
+          description: description,
+          stock_threshold: stockThreshold
+        });
+
+        this.inventories.push(res.data.data);
+
+      }, "Failed to create the inventory");
+    },
+
+    async updateInventory(id, name, description, stockThreshold) {
+      return await useUiStore().handleAsync(async () => {
+
+        const res = await axiosInstance.put(`/inventories/${id}`, {
+          name: name,
+          description: description,
+          stock_threshold: stockThreshold
+        });
+
+        // Update inventories list
+        const index = this.inventories.findIndex(inv => inv.id === id);
+        if (index !== -1) {
+          this.inventories[index]["name"] = name;
+          this.inventories[index]["description"] = description;
+          this.inventories[index]["stock_threshold"] = stockThreshold;
+          this.activeInventory = this.inventories[index];
+        }
+
+      }, "Failed to update the inventory", false);
+    },
+
+    async removeInventory(id, router) {
+
+      return await useUiStore().handleAsync(async () => {
+
+        await axiosInstance.delete(`/inventories/${id}`);
+
+        router.push('/');
+
+        this.activeInventory = null;
+        this.inventories = this.inventories.filter(inv => inv.id != id);
+
+
+      }, "Failed to delete the inventory");
+
+    },
+
     async loadCollabs() {
       return await useUiStore().handleAsync(async () => {
-        const res = await axiosInstance.get(`/inventories/${this.activeInventory}/collabs`);
+        const res = await axiosInstance.get(`/inventories/${this.activeInventory.id}/collabs`);
 
         this.collabs = res.data.data;
 
@@ -62,7 +113,7 @@ export const useAppStore = defineStore('App', {
     async loadInventoryProducts(url = null, filterParams = "") {
       return await useUiStore().handleAsync(async () => {
         this.paginatedProducts.products = null;
-        const res = await axiosInstance.get(url || `/inventories/${this.activeInventory}/products${filterParams}`);
+        const res = await axiosInstance.get(url || `/inventories/${this.activeInventory.id}/products${filterParams}`);
 
         this.paginatedProducts.products = res.data.data.data;
         this.paginatedProducts.previousUrl = res.data.data.prev_page_url;
@@ -74,7 +125,7 @@ export const useAppStore = defineStore('App', {
     async updateUserRole(userId, role) {
       return await useUiStore().handleAsync(async () => {
 
-        const res = await axiosInstance.put(`/inventories/${this.activeInventory}/collabs`, {
+        const res = await axiosInstance.put(`/inventories/${this.activeInventory.id}/collabs`, {
           user_id: userId,
           role: role
         });
@@ -87,7 +138,7 @@ export const useAppStore = defineStore('App', {
     async removeUser(id) {
       return await useUiStore().handleAsync(async () => {
 
-        const res = await axiosInstance.delete(`/inventories/${this.activeInventory}/collabs/${id}`);
+        const res = await axiosInstance.delete(`/inventories/${this.activeInventory.id}/collabs/${id}`);
 
         this.collabs = this.collabs.filter(each => each.id !== id);
         // await this.loadCollabs();
@@ -98,7 +149,7 @@ export const useAppStore = defineStore('App', {
     async sendInvitation(email, expiryDate = null) {
       return await useUiStore().handleAsync(async () => {
 
-        const res = await axiosInstance.post(`/inventories/${this.activeInventory}/invitations`, {
+        const res = await axiosInstance.post(`/inventories/${this.activeInventory.id}/invitations`, {
           invitee_email: email,
           expires_at: expiryDate
         });
@@ -109,7 +160,7 @@ export const useAppStore = defineStore('App', {
     async loadInvitations(url = null) {
       return await useUiStore().handleAsync(async () => {
         this.paginatedInvitations.invitations = null;
-        const res = await axiosInstance.get(url || `/inventories/${this.activeInventory}/invitations`);
+        const res = await axiosInstance.get(url || `/inventories/${this.activeInventory.id}/invitations`);
 
         this.paginatedInvitations.invitations = res.data.data.data;
         this.paginatedInvitations.previousUrl = res.data.data.prev_page_url;
@@ -120,7 +171,7 @@ export const useAppStore = defineStore('App', {
 
     async cancelInvitation(id) {
       return await useUiStore().handleAsync(async () => {
-        const res = await axiosInstance.put(`/inventories/${this.activeInventory}/invitations/${id}`, {
+        const res = await axiosInstance.put(`/inventories/${this.activeInventory.id}/invitations/${id}`, {
           status: "cancelled"
         });
 
@@ -165,7 +216,7 @@ export const useAppStore = defineStore('App', {
     async loadLogs(url = null) {
       return await useUiStore().handleAsync(async () => {
         this.paginatedLogs.logs = null;
-        const res = await axiosInstance.get(url || `/inventories/${this.activeInventory}/logs`);
+        const res = await axiosInstance.get(url || `/inventories/${this.activeInventory.id}/logs`);
 
         this.paginatedLogs.logs = res.data.data.data;
         this.paginatedLogs.previousUrl = res.data.data.prev_page_url;
@@ -177,7 +228,7 @@ export const useAppStore = defineStore('App', {
     async addProduct(name, prefix = null, initialQty = null) {
       return await useUiStore().handleAsync(async () => {
 
-        await axiosInstance.post(`/inventories/${this.activeInventory}/products`, {
+        await axiosInstance.post(`/inventories/${this.activeInventory.id}/products`, {
           name: name,
           prefix: prefix,
           initial_qty: initialQty
@@ -187,11 +238,11 @@ export const useAppStore = defineStore('App', {
 
       }, "Failed to Add the product", false);
     },
-    
+
     async updateProduct(id, name) {
       return await useUiStore().handleAsync(async () => {
 
-        await axiosInstance.put(`/inventories/${this.activeInventory}/products/${id}`, {
+        await axiosInstance.put(`/inventories/${this.activeInventory.id}/products/${id}`, {
           name: name,
         });
 
@@ -203,7 +254,7 @@ export const useAppStore = defineStore('App', {
     async removeProduct(id) {
       return await useUiStore().handleAsync(async () => {
 
-        await axiosInstance.delete(`/inventories/${this.activeInventory}/products/${id}`);
+        await axiosInstance.delete(`/inventories/${this.activeInventory.id}/products/${id}`);
 
         this.paginatedProducts.products = this.paginatedProducts.products.filter(each => each.id !== id);
 
@@ -213,23 +264,46 @@ export const useAppStore = defineStore('App', {
     async adjustProductInbound(id, qty) {
       return await useUiStore().handleAsync(async () => {
 
-        await axiosInstance.post(`/inventories/${this.activeInventory}/products/${id}/inbound`, {
+        await axiosInstance.post(`/inventories/${this.activeInventory.id}/products/${id}/inbound`, {
           quantity: qty
         });
         await this.loadInventoryProducts();
 
       }, "Failed to Delete", false);
     },
-    
+
     async adjustProductOutbound(id, qty) {
       return await useUiStore().handleAsync(async () => {
 
-        await axiosInstance.post(`/inventories/${this.activeInventory}/products/${id}/outbound`, {
+        await axiosInstance.post(`/inventories/${this.activeInventory.id}/products/${id}/outbound`, {
           quantity: qty
         });
         await this.loadInventoryProducts();
 
       }, "Failed to Delete", false);
+    },
+
+    resetActiveInventoryData() {
+      this.activeInventory = null;
+      this.collabs = null;
+      this.paginatedInvitations = {
+        invitations: null,
+        previousUrl: null,
+        nextUrl: null,
+        currentPage: null
+      };
+      this.paginatedProducts = {
+        products: null,
+        previousUrl: null,
+        nextUrl: null,
+        currentPage: null
+      };
+      this.paginatedLogs = {
+        logs: null,
+        previousUrl: null,
+        nextUrl: null,
+        currentPage: null
+      };
     },
 
     resetState() {

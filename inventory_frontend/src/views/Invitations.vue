@@ -78,6 +78,10 @@
                         </div>
                     </td>
                 </tr>
+
+                <tr v-if="appStore.paginatedInvitations.invitations.length == 0">
+                    <td colspan="6" class="text-center">No Invitation Found</td>
+                </tr>
             </tbody>
         </table>
     </div>

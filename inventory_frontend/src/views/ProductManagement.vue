@@ -185,9 +185,8 @@
                 </tr>
 
                 <tr v-if="appStore.paginatedProducts.products.length == 0">
-                    <td colspan="6" class="text-center">No products available</td>
+                    <td colspan="6" class="text-center">No Product Found</td>
                 </tr>
-
             </tbody>
         </table>
     </div>

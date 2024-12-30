@@ -17,6 +17,28 @@ class InventoryPolicy
     {
         return $inventory->collaborators->contains('user_id', $user->id);
     }
+    
+    public function update(User $user, Inventory $inventory): bool
+    {
+        $collaborators = $inventory->collaborators;
+    
+        // Get Admin and Manager collaborators
+        $admin = $collaborators->firstWhere('role', 'Admin');
+        $manager = $collaborators->firstWhere('role', 'Manager');
+
+        // Check if the user matches the Admin or Manager roles
+        $isAdmin = $admin && $user->id === $admin->user_id;
+        $isManager = $manager && $user->id === $manager->user_id;
+    
+        return $isAdmin || $isManager;
+    }
+    
+    public function delete(User $user, Inventory $inventory): bool
+    {
+        $collaborators = $inventory->collaborators;
+        $admin = $collaborators->firstWhere('role', 'Admin');
+        return $user->id === $admin->user_id;
+    }
 
     public function manageRoles(User $user, Inventory $inventory): bool
     {

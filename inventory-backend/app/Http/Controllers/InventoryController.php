@@ -15,7 +15,7 @@ class InventoryController extends Controller
     public function index()
     {
         return $this->successResponse(
-            data: Inventory::with("collaborators")->whereHas('collaborators', function ($query) {
+            data: Inventory::whereHas('collaborators', function ($query) {
                 $query->where('user_id', auth()->id());
             })->get(),
             message: "Fetched All Inventories"
@@ -30,7 +30,7 @@ class InventoryController extends Controller
 
             $inventory = null;
             
-            DB::transaction(function () use ($details) {
+            DB::transaction(function () use (&$inventory, $details) {
                 //create the inventory
                 $inventory = Inventory::create($details);
                 //store the current authenticated user as the admin in inventory_collaborators table

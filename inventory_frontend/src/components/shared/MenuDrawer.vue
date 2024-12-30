@@ -30,7 +30,7 @@
         <div class="drawer-side">
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <div
-                class="menu bg-base-200 text-base-content min-h-full w-30 lg:w-80 flex flex-col p-3 lg:px-6 prose justify-between">
+                class="menu bg-base-200 text-base-content h-screen overflow-hidden w-30 lg:w-80 flex flex-col p-3 lg:px-6 prose justify-between">
                 <!-- Sidebar content here -->
                 <SidebarContent />
             </div>
