@@ -130,6 +130,14 @@ export const useAuthStore = defineStore('Auth', {
             }, "Failed");
         },
 
+        async deactivate() {
+            return await useUiStore().handleAsync(async () => {
+                await axiosInstance.delete(`/user/delete`);
+                this.removeUserData();
+                useAppStore().resetState();
+            }, "Failed");
+        },
+
         saveUserData(user, token = null) {
             this.user = user;
             if (token) localStorage.setItem('token', token);
