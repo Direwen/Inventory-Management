@@ -44,7 +44,8 @@ export const useAppStore = defineStore('App', {
 
         const res = await axiosInstance.get("/inventories");
 
-        this.inventories = (res.data.data.length > 0) ? res.data.data : null;
+        // this.inventories = (res.data.data.length > 0) ? res.data.data : null;
+        this.inventories = res.data.data;
 
       }, "Failed to load the inventories");
 

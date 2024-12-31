@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
-import Support from '../views/Support.vue';
 import Auth from '../views/Auth.vue';
 import Profile from '../views/Profile.vue';
-import Inventory from '../views/Inventory.vue';
 import UserManagement from '../views/UserManagement.vue';
 import ProductManagement from '../views/ProductManagement.vue';
 import Logs from '../views/Logs.vue';
@@ -47,7 +45,6 @@ const validateInventory = async (to, from, next) => {
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/support', component: Support },
   { path: '/auth', component: Auth, beforeEnter: requireUnauthenticated },
   { path: '/profile', component: Profile },
   { 

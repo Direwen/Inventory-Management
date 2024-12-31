@@ -1,14 +1,49 @@
 <template>
-  <div>
-    <!-- Trigger notification (e.g., on button click) -->
-    <button class="btn btn-outline" @click="showSuccessToast">Show Success</button>
-    <button class="btn btn-outline" @click="showErrorToast">Show Error</button>
-    <button class="btn btn-outline" @click="uiStore.openModal(SignupSuccess, {'email' : 'bot1@gmail.com'})">Show Error</button>
+  <div class="">
 
-    <div>
-      {{ authStore.user ?? "empty" }}
-    </div>
+    <section v-if="!authStore.isActive" class="flex flex-col gap-4">
+      <h1 class="text-4xl text-center md:text-8xl lg:text-9xl font-extrabold tracking-tighter uppercase">Welcome to
+        Inventory</h1>
+    </section>
 
+    <section v-else>
+      <h1 class="text-2xl lg:text-4xl font-semibold tracking-tighter mb-2">Good Evening, {{ authStore.user.name ??
+        authStore.user.email }}</h1>
+      <p v-if="authStore.isActive && appStore.inventories.length > 0"
+        class="text-lg lg:text-xl tracking-tighter text-gray-500 mb-4">Continue your work in recent inventories</p>
+      <button class="btn btn-block">+ Create a new inventory</button>
+
+      <div v-if="!appStore.inventories || uiStore.loading" class="flex w-full flex-col gap-4">
+        <div v-for="width in [1 / 4, 1 / 2, 11 / 12, 3 / 4, 2 / 3, 5 / 12, 7 / 12, 9 / 12]" :key="width"
+          class="skeleton h-4" :style="{ width: `${width * 100}%` }"></div>
+      </div>
+
+      <div v-else class="overflow-x-auto">
+        <table class="table">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th class="text-center">Name</th>
+              <th class="text-center">Last Modified At</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr v-for="each in appStore.inventories" :key="each.id" @click="navigateToInventory(each.id)"
+              class="cursor-pointer transition-all duration-100 ease-in-out hover:bg-base-200">
+              <td class="text-center">
+                {{ each.name }}
+              </td>
+              <td class="text-center">{{ uiStore.formatRelativeDateTime(each.updated_at) }}</td>
+            </tr>
+
+            <tr v-if="appStore.inventories && appStore.inventories.length == 0">
+              <td colspan="2" class="text-center text-gray-500">No Inventory Found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
   </div>
 </template>
@@ -17,21 +52,24 @@
 import { onMounted } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import { useUiStore } from '../stores/uiStore';
-import { useRoute } from 'vue-router';
+import { useAppStore } from '../stores/AppStore';
+import { useRoute, useRouter } from 'vue-router';
 import Verification from '../components/modals/Verification.vue';
-import SignupSuccess from '../components/modals/SignupSuccess.vue';
 
 const route = useRoute();
+const router = useRouter();
 const authStore = useAuthStore();
 const uiStore = useUiStore();
+const appStore = useAppStore();
 
-onMounted(() => (route.query.status == 'success' || route.query.status == 'failed') ? uiStore.openModal(Verification, {'status' : route.query.status}) : "" );
+onMounted(() => {
+  if (route.query.status == 'success' || route.query.status == 'failed') {
+    uiStore.openModal(Verification, { status: route.query.status });
+  }
+});
 
-const showSuccessToast = () => {
-  uiStore.addNotification("success", "Action was successful!");
-};
-
-const showErrorToast = () => {
-  uiStore.addNotification("error", "An error occurred.");
+// Navigate to inventory
+const navigateToInventory = (id) => {
+  router.push({ name: 'Inventory', params: { id } });
 };
 </script>
