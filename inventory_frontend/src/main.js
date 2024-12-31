@@ -22,7 +22,9 @@ const i18n = createI18n({
         th: th,
         cn: cn,
         es: es
-    }
+    },
+    legacy: false,
+    globalInjection: true
 })
 
 createApp(App)

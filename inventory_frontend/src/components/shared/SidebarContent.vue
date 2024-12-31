@@ -9,7 +9,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
             </svg>
-            Home
+            {{ $t('sidebar.home') }}
         </router-link>
         <!-- DIVIDER -->
         <div class="divider divider-base-300 mb-0"></div>
@@ -22,7 +22,7 @@
         <!-- LANGUAGE SELECTOR -->
         <LanguageSelector />
 
-        <button v-if="authStore.isActive" class="btn w-full btn-outline btn-xs sm:btn-sm md:btn-md" @click="authStore.logout">Log Out</button>
+        <button v-if="authStore.isActive" class="btn w-full btn-outline btn-xs sm:btn-sm md:btn-md" @click="authStore.logout">{{ $t('sidebar.logout') }}</button>
 
     </section>
 </template>

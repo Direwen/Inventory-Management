@@ -7,11 +7,16 @@
     </section>
 
     <section v-else>
-      <h1 class="text-2xl lg:text-4xl font-semibold tracking-tighter mb-2">Good Evening, {{ authStore.user.name ??
-        authStore.user.email }}</h1>
-      <p v-if="authStore.isActive && appStore.inventories.length > 0"
-        class="text-lg lg:text-xl tracking-tighter text-gray-500 mb-4">Continue your work in recent inventories</p>
-      <button class="btn btn-block">+ Create a new inventory</button>
+      
+      <h1 class="text-2xl lg:text-4xl font-semibold tracking-tighter mb-2">{{ greeting }}, {{ authStore.user.name ??
+        authStore.user.email }}
+      </h1>
+      
+      <p v-if="authStore.isActive && appStore.inventories?.length > 0"
+        class="text-lg lg:text-xl tracking-tighter text-gray-500 mb-4">Continue your work in recent inventories
+      </p>
+      
+      <button @click="uiStore.openModal(CreateInventory)" class="btn btn-block">+ Create a new inventory</button>
 
       <div v-if="!appStore.inventories || uiStore.loading" class="flex w-full flex-col gap-4">
         <div v-for="width in [1 / 4, 1 / 2, 11 / 12, 3 / 4, 2 / 3, 5 / 12, 7 / 12, 9 / 12]" :key="width"
@@ -49,20 +54,34 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import { useUiStore } from '../stores/uiStore';
 import { useAppStore } from '../stores/AppStore';
 import { useRoute, useRouter } from 'vue-router';
 import Verification from '../components/modals/Verification.vue';
+import CreateInventory from "../components/modals/CreateInventory.vue";
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const uiStore = useUiStore();
 const appStore = useAppStore();
+const greeting = ref('');
+
+const updateGreeting = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) {
+    greeting.value = 'Good Morning';
+  } else if (hour < 18) {
+    greeting.value = 'Good Afternoon';
+  } else {
+    greeting.value = 'Good Evening';
+  }
+};
 
 onMounted(() => {
+  updateGreeting();
   if (route.query.status == 'success' || route.query.status == 'failed') {
     uiStore.openModal(Verification, { status: route.query.status });
   }

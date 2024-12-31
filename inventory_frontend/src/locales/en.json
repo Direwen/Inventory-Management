@@ -1,8 +1,19 @@
 {
-    "menu" : {
-        "home" : "home",
-        "inventories" : "inventories",
-        "help" : "help",
-        "create" : "create"
-    }
+    "sidebar": {
+        "home": "Home",
+        "logout": "Log Out"
+    },
+    "create": "Create",
+    "inventories": "Inventories",
+    "no_inventories": "No Inventories",
+    "login_message": "Please log in to continue",
+    "date_group": {
+        "today": "Today",
+        "this week": "This Week",
+        "older": "Older"
+    },
+    "users" : "Users",
+    "inventory" : "Inventory",
+    "audit-logs" : "Audit Logs",
+    "invitations" : "Invitations"
 }

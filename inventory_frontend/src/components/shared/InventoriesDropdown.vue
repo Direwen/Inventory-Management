@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <button @click="toggleDropdown" class="w-full flex justify-between items-center">
-            <span class="font-semibold">Inventories</span>
+            <span class="font-semibold">{{ $t("inventories") }}</span>
             <svg :class="{ 'rotate-180': isOpen }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                 stroke-width="1.5" stroke="currentColor" class="size-6 transition-transform">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 15l-7.5-7.5L4.5 15" />
@@ -9,11 +9,11 @@
         </button>
 
         <div v-show="isOpen" class="absolute w-full z-10">
-            <p v-if="!authStore.isActive" class="py-2 text-center text-gray-500">Please log in to continue</p>
+            <p v-if="!authStore.isActive" class="py-2 text-center text-gray-500">{{ $t("login_message") }}</p>
 
             <section v-else-if="appStore.inventories?.length">
                 <div v-for="(group, key) in groupedInventories" :key="key" v-show="group.length != 0" class="mb-8">
-                    <h4 class="text-xs font-semibold ">{{ key }}</h4>
+                    <h4 class="text-xs font-semibold ">{{ $t(`date_group.${key.toLowerCase()}`) }}</h4>
                     <router-link v-for="each in group" :key="each.id"
                         :to="{ name: 'Inventory', params: { id: each.id } }"
                         class="block no-underline mb-[2px] truncate text-sm py-2 hover:bg-base-300 rounded px-4">

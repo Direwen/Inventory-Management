@@ -1,7 +1,19 @@
 {
-    "menu": {
+    "sidebar": {
         "home": "ပင်မစာမျက်နှာ",
-        "inventories": "ပစ္စည်းစာရင်း",
-        "help": "အကူအညီ"
-    }
+        "logout": "ထွက်ရန်"
+    },
+    "create": "ဖန်တီးရန်",
+    "inventories": "စာရင်းများ",
+    "no_inventories": "စာရင်း မရှိပါ",
+    "login_message": "ဆက်လက်လုပ်ဆောင်ရန် ဝင်ပါ",
+    "date_group": {
+        "today": "ယနေ့",
+        "this week": "ယခုအပတ်",
+        "older": "ယခင်"
+    },
+    "users": "အသုံးပြုသူများ",
+    "inventory": "ကုန်ပစ္စည်းစာရင်း",
+    "audit-logs": "စာရင်းစစ် မှတ်တမ်းများ",
+    "invitations": "ဖိတ်ကြားချက်များ"
 }
