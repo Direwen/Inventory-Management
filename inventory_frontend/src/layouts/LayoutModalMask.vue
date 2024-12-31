@@ -4,7 +4,7 @@
 
 
         <div @click.stop
-            class="w-11/12 md:w-8/12 lg:w-1/2 bg-base-300 prose px-2 py-4 md:px-4 md:py-6 lg:px-6 lg:py-8 rounded">
+            class="w-11/12 md:w-8/12 lg:w-1/2 bg-base-300 prose px-2 py-4 md:px-4 md:py-6 lg:px-6 lg:py-8 rounded overflow-y-scroll max-h-[90vh]">
 
             <slot name="default">
                 <div>

@@ -31,6 +31,17 @@ Route::prefix('email')->group(function () {
 
 // Restore user account
 Route::post('user/restore', [UserController::class, 'restore']);
+// To send password reset link to user
+Route::post('/forgot-password', [PasswordController::class, 'sendResetLink'])
+->name('password.email');
+// To redirect user to password reset page
+Route::get('/reset-password/{token}', [PasswordController::class, 'redirectToResetPage'])
+->name('password.reset');
+// To reset and change the password 
+Route::post('/reset-password', [PasswordController::class, 'reset'])
+->name('password.update');
+// To validate reset password token
+// Route::post('/reset-password/{token}', [PasswordController::class, "validatePasswordResetToken"]);
 
 // Routes that require authentication
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {

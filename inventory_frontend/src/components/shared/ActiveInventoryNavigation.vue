@@ -5,7 +5,8 @@
         <h3 class="my-0 font-extrabold">{{ appStore.activeInventory.name }}</h3>
 
         <router-link :to="{ name: 'User-Management', params: { id: appStore.activeInventory.id } }"
-            class="no-underline flex items-center gap-2">
+            :class="{ 'bg-base-300': isActive('user-management') }"
+            class="no-underline flex items-center gap-2 px-2 py-1 rounded">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -15,7 +16,8 @@
         </router-link>
 
         <router-link :to="{ name: 'Product-Management', params: { id: appStore.activeInventory.id } }"
-            class="no-underline flex items-center gap-2">
+            :class="{ 'bg-base-300': isActive('product-management') }"
+            class="no-underline flex items-center gap-2 px-2 py-1 rounded">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -26,7 +28,7 @@
         </router-link>
 
         <router-link :to="{ name: 'Logs', params: { id: appStore.activeInventory.id } }"
-            class="no-underline flex items-center gap-2">
+            :class="{ 'bg-base-300': isActive('logs') }" class="no-underline flex items-center gap-2 px-2 py-1 rounded">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -36,7 +38,8 @@
         </router-link>
 
         <router-link :to="{ name: 'Invitations', params: { id: appStore.activeInventory.id } }"
-            class="no-underline flex items-center gap-2">
+            :class="{ 'bg-base-300': isActive('invitations') }"
+            class="no-underline flex items-center gap-2 px-2 py-1 rounded">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -49,9 +52,13 @@
 </template>
 
 <script setup>
-
 import { useAppStore } from '../../stores/appStore';
+import { useRoute } from 'vue-router';
 
 const appStore = useAppStore();
+const route = useRoute();
 
+const isActive = (routeName) => {
+    return route.name.toLowerCase() == routeName.toLowerCase();
+};
 </script>

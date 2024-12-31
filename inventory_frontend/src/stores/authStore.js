@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('Auth', {
                 this.saveUserData(res.data.data.user, res.data.data.token);
                 useAppStore().loadEssentialData();
 
-            }, "Failed to login");
+            }, "Failed to login", true, false);
         },
 
         async signup(email, password, confirmPassword) {
@@ -33,7 +33,7 @@ export const useAuthStore = defineStore('Auth', {
                     "password_confirmation": confirmPassword
                 });
 
-            }, "Failed to signup");
+            }, "Failed to signup", true, false);
         },
 
         async resendVerificationLink(email) {
@@ -57,7 +57,7 @@ export const useAuthStore = defineStore('Auth', {
     
                     this.saveUserData(res.data.data);
     
-                }, "failed to load user");
+                }, "failed to load user", true, false);
             }
         },
 
@@ -92,6 +92,25 @@ export const useAuthStore = defineStore('Auth', {
                 this.removeUserData();
                 useAppStore().resetState();
             }, "Failed to logout");
+        },
+
+        async forgotPassword(email) {
+            return await useUiStore().handleAsync(async () => {
+                await axiosInstance.post("/forgot-password", {
+                    email: email
+                });
+            }, "Failed to Send Reset Link");
+        },
+       
+        async resetPassword(token, email, password, confirmedPassword) {
+            return await useUiStore().handleAsync(async () => {
+                await axiosInstance.post(`/reset-password`, {
+                    token: token,
+                    email: email,
+                    password: password,
+                    password_confirmation: confirmedPassword
+                });
+            }, "Failed to reset password");
         },
 
         saveUserData(user, token = null) {

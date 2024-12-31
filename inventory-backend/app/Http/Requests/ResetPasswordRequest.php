@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RestoreUserRequest extends FormRequest
+class ResetPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,10 @@ class RestoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => "required|exists:users|email:rfc,dns|min:5|max:255",
+            'token' => 'required',
+            'email' => 'required|email:rfc,dns|exists:users,email|min:5|max:255|exists:password_reset_tokens,email',
+            'password' => 'required|min:8|confirmed'
         ];
     }
+
 }

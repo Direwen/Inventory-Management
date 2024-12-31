@@ -11,13 +11,16 @@ import { useAuthStore } from '../stores/authStore';
 import { useUiStore } from '../stores/uiStore';
 import { useAppStore } from '../stores/appStore';
 import Invitations from '../views/Invitations.vue';
+import ResetPassword from '../views/ResetPassword.vue';
 
-const requireUnauthenticated = (to, from, next) => {
+const requireUnauthenticated = async (to, from, next) => {
   const authStore = useAuthStore();
   const uiStore = useUiStore();
 
+  await authStore.loadUser();
+
   if (authStore.isActive) {
-    uiStore.addNotification("error", "Unauthorized Access");
+    uiStore.addNotification("error", "You are already logged in.");
     return next('/');
   }
   next();
@@ -75,6 +78,11 @@ const routes = [
         component: Invitations,
       }
     ]
+  },
+  {
+    path: '/reset-password/:token',
+    component: ResetPassword,
+    beforeEnter: requireUnauthenticated
   }
 ];
 
