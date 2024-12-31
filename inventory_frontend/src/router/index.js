@@ -12,6 +12,7 @@ import { useUiStore } from '../stores/uiStore';
 import { useAppStore } from '../stores/appStore';
 import Invitations from '../views/Invitations.vue';
 import ResetPassword from '../views/ResetPassword.vue';
+import RestoreAccount from '../views/RestoreAccount.vue';
 
 const requireUnauthenticated = async (to, from, next) => {
   const authStore = useAuthStore();
@@ -83,7 +84,13 @@ const routes = [
     path: '/reset-password/:token',
     component: ResetPassword,
     beforeEnter: requireUnauthenticated
-  }
+  },
+  {
+    path: '/restore-account',
+    name: 'RestoreAccount',
+    component: RestoreAccount,
+    beforeEnter: requireUnauthenticated, // Ensure the user is not logged in
+  },
 ];
 
 

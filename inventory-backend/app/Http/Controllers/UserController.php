@@ -6,7 +6,10 @@ use App\Http\Requests\RestoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Traits\ApiResponseTrait;
+use Carbon\Carbon;
+use DB;
 use Exception;
+use Hash;
 
 class UserController extends Controller
 {
@@ -77,7 +80,29 @@ class UserController extends Controller
             //Make sure this user record is soft-deleted
             if (!$user->trashed()) return $this->errorResponse("This User Account doesn't require the restoration");
 
-            $user->restore();
+            // Ensure the user has a reactivation token stored
+            if (!$user->reactivation_token) {
+                return $this->errorResponse("No reactivation token found for this user", 400);
+            }
+
+            // Check if the token has expired
+            if (Carbon::parse($user->reactivation_token_expires_at)->isPast()) {
+                return $this->errorResponse("Reactivation token has expired", 400);
+            }
+
+            // Check if the token matches the stored (hashed) token
+            if (!Hash::check($details['token'], $user->reactivation_token)) {
+                return $this->errorResponse("Invalid reactivation token", 400);
+            }
+            
+            DB::transaction(function () use ($user) {
+                $user->restore();
+
+                $user->update([
+                    'reactivation_token' => null,
+                    'reactivation_token_expires_at' => null,
+                ]);
+            });
 
             return $this->successResponse(
                 message: "User account successfully restored",

@@ -29,6 +29,8 @@ Route::prefix('email')->group(function () {
     Route::post('/resend', [AuthController::class, 'resend'])->name('verification.send');
 });
 
+// To Send Restoration Token
+Route::post('user/request-reactivation-token', [AuthController::class, 'sendReactivationToken']);
 // Restore user account
 Route::post('user/restore', [UserController::class, 'restore']);
 // To send password reset link to user
@@ -40,8 +42,6 @@ Route::get('/reset-password/{token}', [PasswordController::class, 'redirectToRes
 // To reset and change the password 
 Route::post('/reset-password', [PasswordController::class, 'reset'])
 ->name('password.update');
-// To validate reset password token
-// Route::post('/reset-password/{token}', [PasswordController::class, "validatePasswordResetToken"]);
 
 // Routes that require authentication
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {

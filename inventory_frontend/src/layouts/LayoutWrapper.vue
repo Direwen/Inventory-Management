@@ -1,5 +1,6 @@
 <template>
-    <div ref="animationParent" class="overflow-x-hidden">
+    <AnimatedContainer cssForContainer="overflow-x-hidden">
+
         <MenuDrawer>
             <template #default>
                 <LayoutContentWrapper />       
@@ -17,25 +18,21 @@
                 </LayoutModalMask>
             </Transition>
         </Teleport>
-    </div>
+
+    </AnimatedContainer>
 </template>
 
 <script setup>
 import LayoutContentWrapper from "./LayoutContentWrapper.vue";
+import AnimatedContainer from "../components/widgets/AnimatedContainer.vue";
 import MenuDrawer from '../components/shared/MenuDrawer.vue';
 import LayoutLoadingMask from "./LayoutLoadingMask.vue";
 import LayoutModalMask from "./LayoutModalMask.vue";
 import { useUiStore } from "../stores/uiStore";
-import autoAnimate from "@formkit/auto-animate"
-import { onMounted, ref } from "vue";
 
 
 const uiStore = useUiStore();
-const animationParent = ref(null);
 
-onMounted(() => {
-    autoAnimate(animationParent.value);
-})
 </script>
 
 <style>

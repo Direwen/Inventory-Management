@@ -34,7 +34,7 @@
             <button type="submit" class="btn w-full my-3">Create an account</button>
         </form>
 
-        <p class="text-center my-0 cursor-pointer select-none">Already have an account? <span
+        <p class="text-center text-sm my-0 cursor-pointer select-none">Already have an account? <span
                 class="underline font-bold underline-offset-2" @click="toLoginForm">Login</span></p>
     </div>
 </template>

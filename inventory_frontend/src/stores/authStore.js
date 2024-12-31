@@ -113,6 +113,23 @@ export const useAuthStore = defineStore('Auth', {
             }, "Failed to reset password");
         },
 
+        async sendReactivationOtp(email) {
+            return await useUiStore().handleAsync(async () => {
+                await axiosInstance.post(`/user/request-reactivation-token`, {
+                    email: email
+                });
+            }, "Failed");
+        },
+
+        async reactivateAccount(email, token) {
+            return await useUiStore().handleAsync(async () => {
+                await axiosInstance.post(`/user/restore`, {
+                    email: email,
+                    token: token
+                });
+            }, "Failed");
+        },
+
         saveUserData(user, token = null) {
             this.user = user;
             if (token) localStorage.setItem('token', token);

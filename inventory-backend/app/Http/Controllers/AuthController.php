@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BaseUserEmailRequest;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Mail\SendUserReactivationToken;
 use App\Traits\ApiResponseTrait;
 use Auth;
 use DB;
@@ -12,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Exception;
+use Mail;
+use Str;
 
 class AuthController extends Controller
 {
@@ -130,6 +134,36 @@ class AuthController extends Controller
             return $this->successResponse(null, "Verification Link has been sent", 200);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
+    //Restore the user
+    public function sendReactivationToken(BaseUserEmailRequest $request)
+    {
+        $details = $request->validated();
+
+        try {
+            $user = User::withTrashed()->where('email', $details["email"])->first();
+
+            //Make sure this user record is soft-deleted
+            if (!$user->trashed()) return $this->errorResponse("This User Account doesn't require the restoration");
+            
+            DB::transaction(function () use ($user)  {
+                $token = Str::random(10);
+                $user->update([
+                    "reactivation_token" => $token,
+                    "reactivation_token_expires_at" => now()->addMinutes(5)
+                ]);
+    
+                Mail::to($user->email)->send(new SendUserReactivationToken($user, $token));
+            });
+
+            return $this->successResponse(
+                data: $user,
+                message: "Reactivatin Token Sent"
+            );
+        } catch (Exception $err) {
+            return $this->errorResponse($err->getMessage());
         }
     }
 }

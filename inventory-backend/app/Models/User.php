@@ -28,7 +28,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'email_verified_at',
-        'google_id'
+        'google_id',
+        'reactivation_token',        
+        'reactivation_token_expires_at',  
     ];
 
     /**
@@ -41,7 +43,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
         'email_verified_at',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'reactivation_token',        
+        'reactivation_token_expires_at', 
     ];
 
     /**
@@ -54,6 +58,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'reactivation_token' => 'hashed',
+            'reactivation_token_expires_at' => 'datetime',
         ];
     }
 
