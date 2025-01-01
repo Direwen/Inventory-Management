@@ -13,7 +13,7 @@
 
             <ThemeToggle />
 
-            <router-link v-if="!authStore.isActive" to="/auth" class="btn ml-2 lg:px-6">Log In</router-link>
+            <router-link v-if="!authStore.isActive" to="/auth" class="btn ml-2 lg:px-6">{{ $t('auth.login') }}</router-link>
 
             <div v-else class="flex items-center">
                 
@@ -30,8 +30,8 @@
                         </svg>
                     </div>
                     <ul tabindex="0" class="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow">
-                        <li><router-link to="/profile">Profile</router-link></li>
-                        <li><a>Deactivate</a></li>
+                        <li><router-link to="/profile">{{ $t('profile.title') }}</router-link></li>
+                        <li><span @click="authStore.logout(router)">{{ $t('sidebar.logout') }}</span></li>
                     </ul>
                 </div>
 
@@ -48,6 +48,8 @@
 import ThemeToggle from './ThemeToggle.vue';
 import Notification from './Notification.vue';
 import { useAuthStore } from '../../stores/authStore';
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
+const router = useRouter();
 </script>

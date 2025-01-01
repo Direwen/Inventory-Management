@@ -1,7 +1,9 @@
 <template>
     <div>
-        <h4 class="text-lg font-semibold mb-2">Deactivate Account</h4>
-        <button class="btn btn-block btn-outline btn-error" @click="deactivate">Deactivate</button>
+        <h4 class="text-lg font-semibold mb-2">{{ $t('profile.deactivate_account') }}</h4>
+        <button class="btn btn-block bg-red-900 text-white tracking-wider uppercase hover:bg-red-700" @click="deactivate">
+            {{ $t('deactivate') }}
+        </button>
     </div>
 </template>
 

@@ -2,12 +2,12 @@
     <!-- HEADER -->
     <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-4 mb-6">
         <section class="prose">
-            <h1>Inventory</h1>
+            <h1>{{ $t("inventory") }}</h1>
             <p class="text-gray-500">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione, non.
+                {{ $t("product_management.guide") }}
             </p>
         </section>
-        <button @click="uiStore.openModal(CreateProduct)" class="btn btn-neutral btn-wide">Create</button>
+        <button @click="uiStore.openModal(CreateProduct)" class="btn btn-neutral btn-wide">{{ $t("buttons.create") }}</button>
     </div>
 
     <div class="flex flex-col md:flex-row justify-between items-center gap-2 mb-4">
@@ -15,7 +15,7 @@
         <section class="flex gap-2 items-center w-full md:w-1/2">
             <!-- Search Input with Button -->
             <div class="relative flex items-center w-full md:grow">
-                <input @keyup.enter="search" v-model="searchTerm" type="text" placeholder="Search"
+                <input @keyup.enter="search" v-model="searchTerm" type="text" :placeholder="$t('product_management.search')"
                     class="w-full rounded-lg pl-4 pr-12 py-3 text-sm shadow bg-base-200 focus:outline-none focus:ring-1 focus:ring-base-content focus:border-base-content" />
                 <button @click="search"
                     class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-base-content">
@@ -38,36 +38,36 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
                     </svg>
-                    <span v-if="!filterParams" class="hidden md:inline">Filter</span>
-                    <span v-else class="hidden md:inline">Active</span>
+                    <span v-if="!filterParams" class="hidden md:inline text-nowrap">{{ $t("buttons.filter") }}</span>
+                    <span v-else class="hidden md:inline text-nowrap">{{ $t("buttons.active") }}</span>
                 </div>
                 <ul tabindex="0"
                     class="dropdown-content menu bg-base-200 rounded-box z-[1] w-72 md:w-[24rem] lg:w-[30rem] p-4 shadow space-y-4">
 
                     <!-- Filter Section Title -->
                     <div class="flex flex-col mb-4">
-                        <h3 class="text-lg font-semibold">Filter by Updated Date</h3>
-                        <p class="text-sm text-gray-500">Select a date range to filter by the last updated date.</p>
+                        <h3 class="text-lg font-semibold">{{ $t("product_management.filter_by_last_modified") }}</h3>
+                        <p class="text-sm text-gray-500">{{ $t("product_management.ask_user_to_select") }}</p>
                     </div>
 
                     <!-- Start Date Input -->
                     <div class="flex flex-col">
-                        <label class="text-sm mb-1">Start Date</label>
+                        <label class="text-sm mb-1">{{ $t("product_management.start_date") }}</label>
                         <input v-model="filterStartDate" type="date"
                             class="w-full rounded-lg pl-4 pr-4 py-3 text-sm shadow bg-base-200 focus:outline-none focus:ring-1 focus:ring-base-content focus:border-base-content" />
                     </div>
 
                     <!-- End Date Input -->
                     <div class="flex flex-col">
-                        <label class="text-sm mb-1">End Date</label>
+                        <label class="text-sm mb-1">{{ $t("product_management.end_date") }}</label>
                         <input v-model="filterEndDate" type="date"
                             class="w-full rounded-lg pl-4 pr-4 py-3 text-sm shadow bg-base-200 focus:outline-none focus:ring-1 focus:ring-base-content focus:border-base-content" />
                     </div>
 
                     <!-- Button Group -->
                     <div class="flex justify-end gap-2 pt-2">
-                        <button @click="clearFilter" class="btn glass">Clear</button>
-                        <button @click="applyFilter" class="btn glass">Apply</button>
+                        <button @click="clearFilter" class="btn glass">{{ $t("buttons.clear") }}</button>
+                        <button @click="applyFilter" class="btn glass">{{ $t("buttons.apply") }}</button>
                     </div>
 
                 </ul>
@@ -108,11 +108,11 @@
             <thead>
                 <tr>
                     <th>SKU</th>
-                    <th>Name</th>
-                    <th>Stock</th>
-                    <th>Added to Inventory At</th>
-                    <th>Last Stock Updated At</th>
-                    <th>Actions</th>
+                    <th>{{ $t('tables.name') }}</th>
+                    <th>{{ $t('tables.stock') }}</th>
+                    <th>{{ $t('tables.added_to_inventory_at') }}</th>
+                    <th>{{ $t('tables.last_stock_modified_at') }}</th>
+                    <th>{{ $t('tables.action') }}</th>
                 </tr>
             </thead>
             <tbody ref="animationParent">
@@ -125,7 +125,7 @@
                     <td>
                         <section class="flex gap-2">
 
-                            <div class="lg:tooltip lg:tooltip-left" data-tip="inbound">
+                            <div class="lg:tooltip lg:tooltip-left" :data-tip="$t('product_management.inbound')">
                                 <button @click="uiStore.openModal(StockAdjustment, {
                                     'name': each.name,
                                     'sku': each.sku,
@@ -141,7 +141,7 @@
 
                                 </button>
                             </div>
-                            <div class="lg:tooltip lg:tooltip-left" data-tip="outbound">
+                            <div class="lg:tooltip lg:tooltip-left" :data-tip="$t('product_management.outbound')">
                                 <button @click="uiStore.openModal(StockAdjustment, {
                                     'name': each.name,
                                     'sku': each.sku,
@@ -157,7 +157,7 @@
 
                                 </button>
                             </div>
-                            <div class="lg:tooltip lg:tooltip-left" data-tip="edit">
+                            <div class="lg:tooltip lg:tooltip-left" :data-tip="$t('buttons.edit')">
                                 <button
                                     @click="uiStore.openModal(UpdateProduct, { 'id': each.id, 'sku': each.sku, 'name': each.name })"
                                     class="btn btn-circle">
@@ -170,7 +170,7 @@
 
                                 </button>
                             </div>
-                            <div class="lg:tooltip lg:tooltip-left" data-tip="delete">
+                            <div class="lg:tooltip lg:tooltip-left" :data-tip="$t('buttons.delete')">
                                 <button @click="remove(each.name, each.id)" class="btn btn-circle">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -185,7 +185,7 @@
                 </tr>
 
                 <tr v-if="appStore.paginatedProducts.products.length == 0">
-                    <td colspan="6" class="text-center">No Product Found</td>
+                    <td colspan="6" class="text-center">{{ $t("product_management.not_found") }}</td>
                 </tr>
             </tbody>
         </table>

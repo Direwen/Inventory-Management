@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <h1 class="text-center">Login</h1>
+        <h1 class="text-center">{{ $t('auth.login') }}</h1>
 
         <form @submit.prevent="submitForm" class="flex flex-col gap-3">
             <label class="input input-bordered flex items-center gap-2">
@@ -22,15 +22,17 @@
                 <input required v-model="password" type="password" class="grow placeholder:text-base-content/40" placeholder="Password" />
             </label>
 
-            <button type="submit" class="btn w-full my-3">Login</button>
+            <button type="submit" class="btn w-full my-3">{{ $t('auth.login') }}</button>
         </form>
 
         <section class="flex justify-between items-center">
 
-            <p class="my-0 cursor-pointer select-none text-sm">New here? <span
-                class="underline font-bold underline-offset-2" @click="toSignupForm">Sign Up</span></p>
+            <p class="my-0 cursor-pointer select-none text-sm">{{ $t('auth.forgot_password') }} <span
+                class="underline font-bold underline-offset-2" @click="toSignupForm">{{ $t('auth.signup') }}</span></p>
 
-            <span class="cursor-pointer text-sm select-none underline underline-offset-2" @click="uiStore.openModal(SendPswReset)">Forgot Password</span>
+            <span class="cursor-pointer text-sm select-none underline underline-offset-2" @click="uiStore.openModal(SendPswReset)">
+                {{ $t('auth.forgot_password') }}
+            </span>
 
         </section>
     </div>

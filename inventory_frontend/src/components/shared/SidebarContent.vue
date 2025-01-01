@@ -22,7 +22,7 @@
         <!-- LANGUAGE SELECTOR -->
         <LanguageSelector />
 
-        <button v-if="authStore.isActive" class="btn w-full btn-outline btn-xs sm:btn-sm md:btn-md" @click="authStore.logout">{{ $t('sidebar.logout') }}</button>
+        <button v-if="authStore.isActive" class="btn w-full btn-outline btn-xs sm:btn-sm md:btn-md" @click="authStore.logout(router)">{{ $t('sidebar.logout') }}</button>
 
     </section>
 </template>
@@ -34,7 +34,9 @@ import CreateInventoryBtn from './CreateInventoryBtn.vue';
 import ActiveInventoryNavigation from './ActiveInventoryNavigation.vue';
 import { useAuthStore } from '../../stores/authStore';
 import { useAppStore } from '../../stores/appStore';
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 const appStore = useAppStore();
+const router = useRouter();
 </script>

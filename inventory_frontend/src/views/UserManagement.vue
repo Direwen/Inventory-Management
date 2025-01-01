@@ -4,7 +4,7 @@
         <section class="w-full flex justify-between items-center">
             <h1>
                 {{ appStore.activeInventory?.name }}
-                <div class="tooltip" data-tip="Stock Threshold Limit">
+                <div class="tooltip" :data-tip="$t('tooltip.stockThresholdLimit')">
                     <div class="badge badge-warning">{{ appStore.activeInventory?.stock_threshold }}</div>
                 </div>
             </h1>
@@ -34,27 +34,21 @@
             {{ appStore.activeInventory?.description }}
         </p>
         <p class="text-gray-500 indent-8 text-justify">
-            Managing users within an inventory follows strict guidelines to ensure smooth operation and accountability.
-            Each inventory must always have at least one admin, and the total number of users cannot exceed five. In
-            case the admin is unavailable or leaves, a manager can take over the admin role, but there can only be one
-            manager at any given time. Admins cannot demote themselves unless a backup manager is in place to maintain
-            leadership. Additionally, an admin cannot leave the inventory if they are the sole user remaining. However,
-            if necessary, the admin holds the authority to delete the entire inventory, ensuring complete control over
-            the inventory lifecycle.
+            {{ $t('user_management.guide') }}
         </p>
     </section>
 
     <section class="flex flex-col md:flex-row justify-between items-center md:items-end gap-4 mb-6">
 
         <section class="prose">
-            <h1>User Management</h1>
+            <h1>{{ $t('headers.userManagement') }}</h1>
         </section>
 
         <div :class="{ 'lg:tooltip lg:tooltip-top': appStore.collabs?.length >= 5 }"
-            :data-tip="appStore.collabs?.length >= 5 ? 'Max users reached' : ''">
+            :data-tip="appStore.collabs?.length >= 5 ? $t('tooltip.maxUsers') : ''">
             <button @click="uiStore.openModal(Invitation)" class="btn btn-neutral btn-wide"
                 :disabled="appStore.collabs?.length >= 5">
-                {{ appStore.collabs ? `Invite (${appStore.collabs.length}/5)` : 'Invite' }}
+                {{ appStore.collabs ? `${$t('buttons.invite')} (${appStore.collabs.length}/5)` : $t('buttons.invite') }}
             </button>
         </div>
     </section>
@@ -68,20 +62,20 @@
         <table class="table ">
             <thead>
                 <tr>
-                    <th>User ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Joined At</th>
-                    <th>Last Updated At</th>
-                    <th>Action</th>
+                    <th>{{ $t('tables.user_id') }}</th>
+                    <th>{{ $t('tables.name') }}</th>
+                    <th>{{ $t('tables.email') }}</th>
+                    <th>{{ $t('tables.role') }}</th>
+                    <th>{{ $t('tables.joined_at') }}</th>
+                    <th>{{ $t('tables.last_updated_at') }}</th>
+                    <th>{{ $t('tables.action') }}</th>
                 </tr>
             </thead>
             <tbody ref="animationParent">
                 <tr v-for="each in appStore.collabs" :key="each.id" :recordId="each.id" :userId="each.user_id"
                     class="hover min-w-fit" :class="{ 'bg-base-200': each.user.email == authStore.user.email }">
                     <th>{{ each.user_id }}</th>
-                    <td>{{ each.user?.name || 'N/A' }}</td>
+                    <td>{{ each.user?.name || $t('defaults.notAvailable') }}</td>
                     <td>{{ each.user.email }}</td>
                     <td>
                         <RoleSelector :userId="each.user_id" :currentRole="each.role" :email="each.user.email" />

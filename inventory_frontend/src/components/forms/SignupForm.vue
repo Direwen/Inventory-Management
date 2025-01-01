@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <h1 class="text-center">Sign Up</h1>
+        <h1 class="text-center">{{ $t('auth.signup') }}</h1>
 
         <form @submit.prevent="submitForm" class="flex flex-col gap-3">
             <label class="input input-bordered flex items-center gap-2">
@@ -31,11 +31,11 @@
                 <input required v-model="confirmPassword" type="password" class="grow placeholder:text-base-content/40" placeholder="confirm password" />
             </label>
 
-            <button type="submit" class="btn w-full my-3">Create an account</button>
+            <button type="submit" class="btn w-full my-3">{{ $t('auth.create_account') }}</button>
         </form>
 
-        <p class="text-center text-sm my-0 cursor-pointer select-none">Already have an account? <span
-                class="underline font-bold underline-offset-2" @click="toLoginForm">Login</span></p>
+        <p class="text-center text-sm my-0 cursor-pointer select-none">{{ $t('auth.already_have_account') }} <span
+                class="underline font-bold underline-offset-2" @click="toLoginForm">{{ $t('auth.create_account') }}</span></p>
     </div>
 </template>
 

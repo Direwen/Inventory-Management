@@ -1,7 +1,112 @@
 {
-    "menu": {
-        "home": "主页",
-        "inventories": "库存",
-        "help": "帮助"
-    }
+    "welcome": "欢迎来到库存管理",
+    "sidebar": {
+        "home": "首页",
+        "logout": "登出"
+    },
+    "create": "创建",
+    "create_inventory": "创建新库存",
+    "inventories": "库存",
+    "no_inventories": "没有库存",
+    "login_message": "请登录以继续",
+    "date_group": {
+        "today": "今天",
+        "this week": "本周",
+        "older": "更早"
+    },
+    "users": "用户",
+    "inventory": "库存",
+    "audit-logs": "审核日志",
+    "deactivate": "停用",
+    "mark_as_read": "标记为已读",
+    "greetings": {
+        "morning": "早上好",
+        "afternoon": "下午好",
+        "evening": "晚上好"
+    },
+    "continue_your_work": "继续最近的库存工作",
+    "tables": {
+        "id": "ID",
+        "user": "用户",
+        "name": "名称",
+        "last_modified": "最后修改时间",
+        "user_id": "用户ID",
+        "email": "电子邮件",
+        "role": "角色",
+        "joined_at": "加入时间",
+        "created_at": "创建时间",
+        "last_updated_at": "最后更新时间",
+        "action": "操作",
+        "stock": "库存",
+        "added_to_inventory_at": "添加到库存时间",
+        "last_stock_modified_at": "最后修改库存时间",
+        "expiry_date": "到期日期",
+        "status": "状态",
+        "sent_at": "发送时间"
+    },
+    "tooltip": {
+        "stockThresholdLimit": "库存阈值限制",
+        "maxUsers": "用户数已达上限"
+    },
+    "buttons": {
+        "create": "创建",
+        "invite": "邀请",
+        "edit": "编辑",
+        "delete": "删除",
+        "filter": "筛选",
+        "active": "激活",
+        "clear": "清除",
+        "apply": "应用",
+        "cancel": "取消",
+        "save_changes": "保存更改"
+    },
+    "headers": {
+        "userManagement": "用户管理",
+        "logs": "审核日志",
+        "invitations": "邀请"
+    },
+    "user_management": {
+        "guide": "在库存中管理用户需遵循严格的指南，以确保操作顺畅和责任明确。每个库存必须始终有至少一个管理员，并且用户总数不能超过五个。如果管理员不可用或离职，经理可以接管管理员角色，但任何时候只能有一个经理。管理员不能自我降级，除非有备份经理来维持领导。管理员在库存中是唯一用户时无法离开，但在必要时，管理员有权删除整个库存，从而完全掌控库存生命周期。"
+    },
+    "product_management": {
+        "guide": "查看和管理库存物品，追踪库存数量，并执行进货和出货操作。",
+        "inbound": "进货",
+        "outbound": "出货",
+        "not_found": "未找到产品",
+        "filter_by_last_modified": "按最后修改日期筛选",
+        "ask_user_to_select": "选择日期范围以按最后修改日期筛选。",
+        "start_date": "开始日期",
+        "end_date": "结束日期",
+        "search": "搜索"
+    },
+    "logs": {
+        "guide": "查看最近的操作和角色分配。"
+    },
+    "invitations": {
+        "guide": "管理和查看发送给用户的邀请。"
+    },
+    "profile": {
+        "title": "个人资料",
+        "account_settings": "账户设置",
+        "personal_info": "个人信息",
+        "security": "安全",
+        "connected_accounts": "连接的账户",
+        "discord": "Discord",
+        "connected": "已连接",
+        "deactivate_account": "停用账户"
+    },
+    "no_notification": "没有通知",
+    "auth": {
+        "login": "登录",
+        "signup": "注册",
+        "create_account": "创建账户",
+        "new_here": "新来的吗？",
+        "forgot_password": "忘记密码",
+        "confirm_password": "确认密码",
+        "already_have_account": "已有账户？",
+        "please_enter_email": "请输入您的电子邮件地址",
+        "please_enter_password": "请输入密码",
+        "please_confirm_password": "请确认密码"
+    },
+    "notAvailable": "N/A"
 }

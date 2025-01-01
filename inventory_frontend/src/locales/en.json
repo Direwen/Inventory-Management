@@ -1,9 +1,11 @@
 {
+    "welcome": "Welcome to inventory",
     "sidebar": {
         "home": "Home",
         "logout": "Log Out"
     },
     "create": "Create",
+    "create_inventory": "Create a new inventory",
     "inventories": "Inventories",
     "no_inventories": "No Inventories",
     "login_message": "Please log in to continue",
@@ -12,8 +14,99 @@
         "this week": "This Week",
         "older": "Older"
     },
-    "users" : "Users",
-    "inventory" : "Inventory",
-    "audit-logs" : "Audit Logs",
-    "invitations" : "Invitations"
+    "users": "Users",
+    "inventory": "Inventory",
+    "audit-logs": "Audit Logs",
+    "deactivate": "Deactivate",
+    "mark_as_read": "Mark As Read",
+    "greetings": {
+        "morning": "Good Morning",
+        "afternoon": "Good Afternoon",
+        "evening": "Good Evening"
+    },
+    "continue_your_work": "Continue your work in recent inventories",
+    "tables": {
+        "id": "Id",
+        "user": "User",
+        "name": "Name",
+        "last_modified": "Last modified at",
+        "user_id": "User ID",
+        "email": "Email",
+        "role": "Role",
+        "joined_at": "Joined At",
+        "created_at": "Created At",
+        "last_updated_at": "Last Updated At",
+        "action": "Action",
+        "stock" : "Stock",
+        "added_to_inventory_at" : "Added to inventory at",
+        "last_stock_modified_at" : "Last Stock modified at",
+        "expiry_date" : "Expiry Date",
+        "status": "Status",
+        "sent_at": "Send At"
+    },
+    "tooltip": {
+        "stockThresholdLimit": "Stock Threshold Limit",
+        "maxUsers": "Max users reached"
+    },
+    "buttons": {
+        "create": "Create",
+        "invite": "Invite",
+        "edit": "Edit",
+        "delete": "Delete",
+        "filter" : "Filter",
+        "active" : "Active",
+        "clear" : "Clear",
+        "apply" : "Apply",
+        "cancel" : "Cancel",
+        "save_changes" : "Save Changes"
+    },
+    "headers": {
+        "userManagement": "User Management",
+        "logs" : "Audit Logs",
+        "invitations" : "Invitations"
+    },
+    "user_management" : {
+        "guide" : "Managing users within an inventory follows strict guidelines to ensure smooth operation and accountability. Each inventory must always have at least one admin, and the total number of users cannot exceed five. In case the admin is unavailable or leaves, a manager can take over the admin role, but there can only be one manager at any given time. Admins cannot demote themselves unless a backup manager is in place to maintain leadership. Additionally, an admin cannot leave the inventory if they are the sole user remaining. However, if necessary, the admin holds the authority to delete the entire inventory, ensuring complete control over the inventory lifecycle."
+    },
+    "product_management" : {
+        "guide" : "View and manage your inventory items, track stock quantities, and perform inbound and outbound actions.",
+        "inbound": "Inbound",
+        "outbound": "Outbound",
+        "not_found": "No Product Found",
+        "filter_by_last_modified" : "Filter by Last Modified Date",
+        "ask_user_to_select" : "Select a date range to filter by the last modified date.",
+        "start_date" : "Start Date",
+        "end_date" : "End Date",
+        "search" : "Search"
+    },
+    "logs" : {
+        "guide" : "View recent actions and role assignments."
+    },
+    "invitations" : {
+        "guide" : "Manage and view invitations sent to users."
+    },
+    "profile" : {
+        "title": "Profile",
+        "account_settings": "Account Settings",
+        "personal_info": "Personal Information",
+        "security": "Security",
+        "connected_accounts": "Connected Accounts",
+        "discord": "Discord",
+        "connected": "Connected",
+        "deactivate_account": "Deactivate Account"
+    },
+    "no_notification": "No Notification",
+    "auth": {
+        "login": "Login",
+        "signup": "Sign Up",
+        "create_account": "Create an account",
+        "new_here": "New here?",
+        "forgot_password": "Forgot Password",
+        "confirm_password": "Confirm password",
+        "already_have_account": "Already have an account?",
+        "please_enter_email": "Please enter your email address",
+        "please_enter_password": "Please enter your password",
+        "please_confirm_password": "Please confirm your password"
+    },     
+    "notAvailable": "N/A"
 }

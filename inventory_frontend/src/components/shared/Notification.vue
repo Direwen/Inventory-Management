@@ -59,13 +59,13 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                     </svg>
-                    No Notifications
+                    {{ $t('no_notification') }}
                 </p>
             </li>
 
             <li v-if="appStore.noti" class="flex items-end">
                 <button class="btn text-gray-500" @click="appStore.markNotificationsAsRead()">
-                    Mark As Read
+                    {{ $t("mark_as_read") }}
                 </button>
             </li>
         </ul>

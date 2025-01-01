@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h4 class="text-lg font-semibold mb-2">Personal Information</h4>
+        <h4 class="text-lg font-semibold mb-2">{{ $t("profile.personal_info") }}</h4>
         <label class="input input-bordered flex items-center gap-2">
             Email
             <input type="text" class="grow" :placeholder="email" disabled />
@@ -26,7 +26,7 @@
             </p>
 
             <section class="flex justify-end">
-                <button type="submit" class="btn mt-4" :disabled="!canSave">Save Changes</button>
+                <button type="submit" class="btn mt-4" :disabled="!canSave">{{ $t("buttons.save_changes") }}</button>
             </section>
         </form>
     </div>

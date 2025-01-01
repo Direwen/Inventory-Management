@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h4 class="text-lg font-semibold mb-2">Security</h4>
+        <h4 class="text-lg font-semibold mb-2">{{ $t("profile.security") }}</h4>
 
         <form @submit.prevent="submit">
             <!-- Current Password -->
@@ -46,7 +46,7 @@
             </p>
 
             <section class="flex justify-end">
-                <button type="submit" class="btn mt-4" :disabled="!canSave">Save Changes</button>
+                <button type="submit" class="btn mt-4" :disabled="!canSave">{{ $t("buttons.save_changes") }}</button>
             </section>
         </form>
     </div>

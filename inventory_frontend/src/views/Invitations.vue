@@ -1,9 +1,9 @@
 <template>
     <!-- HEADER -->
     <div class="prose mb-6 w-full">
-        <h1>Invitations</h1>
+        <h1>{{ $t("headers.invitations") }}</h1>
         <p class="text-gray-500">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione, non.
+            {{ $t("invitations.guide") }}
         </p>
     </div>
     <!-- Search Bar and Pagination -->
@@ -39,12 +39,12 @@
             <!-- head -->
             <thead>
                 <tr>
-                    <th>Email</th>
-                    <th>Expiry date</th>
-                    <th>Status</th>
-                    <th>Sent At</th>
-                    <th>Last Updated At</th>
-                    <th>Action</th>
+                    <th>{{ $t("tables.email") }}</th>
+                    <th>{{ $t("tables.expiry_date") }}</th>
+                    <th>{{ $t("tables.status") }}</th>
+                    <th>{{ $t("tables.sent_at") }}</th>
+                    <th>{{ $t("tables.last_updated_at") }}</th>
+                    <th>{{ $t("tables.action") }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,7 +68,7 @@
                     <td>{{ uiStore.formatDate(each.created_at) }}</td>
                     <td>{{ uiStore.formatDate(each.updated_at) }}</td>
                     <td>
-                        <div class="lg:tooltip lg:tooltip-left" data-tip="cancel">
+                        <div class="lg:tooltip lg:tooltip-left" :data-tip="$t('buttons.cancel')">
                             <button :disabled="each.status !== 'pending'" @click="appStore.cancelInvitation(each.id)" class="btn btn-circle">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">

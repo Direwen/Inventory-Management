@@ -2,21 +2,24 @@
   <div class="">
 
     <section v-if="!authStore.isActive" class="flex flex-col gap-4">
-      <h1 class="text-4xl text-center md:text-8xl lg:text-9xl font-extrabold tracking-tighter uppercase">Welcome to
-        Inventory</h1>
+      <h1 class="text-4xl text-center md:text-8xl lg:text-9xl font-extrabold tracking-tighter uppercase">
+        {{ $t("welcome") }}
+      </h1>
     </section>
 
     <section v-else>
-      
-      <h1 class="text-2xl lg:text-4xl font-semibold tracking-tighter mb-2">{{ greeting }}, {{ authStore.user.name ??
+
+      <h1 class="text-2xl lg:text-4xl font-semibold tracking-tighter mb-2">{{ $t(`greetings.${currentGreeting}`) }}, {{ authStore.user.name
+        ??
         authStore.user.email }}
       </h1>
-      
+
       <p v-if="authStore.isActive && appStore.inventories?.length > 0"
-        class="text-lg lg:text-xl tracking-tighter text-gray-500 mb-4">Continue your work in recent inventories
+        class="text-lg lg:text-xl tracking-tighter text-gray-500 mb-4">
+        {{ $t('continue_your_work') }}
       </p>
-      
-      <button @click="uiStore.openModal(CreateInventory)" class="btn btn-block">+ Create a new inventory</button>
+
+      <button @click="uiStore.openModal(CreateInventory)" class="btn btn-block">+ {{ $t("create_inventory") }}</button>
 
       <div v-if="!appStore.inventories || uiStore.loading" class="flex w-full flex-col gap-4">
         <div v-for="width in [1 / 4, 1 / 2, 11 / 12, 3 / 4, 2 / 3, 5 / 12, 7 / 12, 9 / 12]" :key="width"
@@ -28,8 +31,8 @@
           <!-- head -->
           <thead>
             <tr>
-              <th class="text-center">Name</th>
-              <th class="text-center">Last Modified At</th>
+              <th class="text-center">{{ $t("tables.name") }}</th>
+              <th class="text-center">{{ $t("tables.last_modified") }}</th>
             </tr>
           </thead>
           <tbody>
@@ -54,7 +57,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import { useUiStore } from '../stores/uiStore';
 import { useAppStore } from '../stores/AppStore';
@@ -67,21 +70,15 @@ const router = useRouter();
 const authStore = useAuthStore();
 const uiStore = useUiStore();
 const appStore = useAppStore();
-const greeting = ref('');
 
-const updateGreeting = () => {
+const currentGreeting = computed(() => {
   const hour = new Date().getHours();
-  if (hour < 12) {
-    greeting.value = 'Good Morning';
-  } else if (hour < 18) {
-    greeting.value = 'Good Afternoon';
-  } else {
-    greeting.value = 'Good Evening';
-  }
-};
+  if (hour < 12) return 'morning';
+  else if (hour < 18) return 'afternoon';
+  else return 'evening';
+});
 
 onMounted(() => {
-  updateGreeting();
   if (route.query.status == 'success' || route.query.status == 'failed') {
     uiStore.openModal(Verification, { status: route.query.status });
   }

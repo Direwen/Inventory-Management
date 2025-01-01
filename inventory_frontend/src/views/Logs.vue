@@ -1,9 +1,9 @@
 <template>
     <!-- HEADER -->
     <div class="prose mb-6 w-full">
-        <h1>Audit Logs</h1>
+        <h1>{{ $t("headers.logs") }}</h1>
         <p class="text-gray-500">
-            View recent actions and role assignments.
+            {{ $t("logs.guide") }}
         </p>
     </div>
     <!-- Search Bar and Pagination -->
@@ -38,11 +38,11 @@
             <!-- head -->
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>User</th>
-                    <th>Action</th>
-                    <th>Created At</th>
-                    <th>Last Updated At</th>
+                    <th>{{ $t("tables.id") }}</th>
+                    <th>{{ $t("tables.user") }}</th>
+                    <th>{{ $t("tables.action") }}</th>
+                    <th>{{ $t("tables.created_at") }}</th>
+                    <th>{{ $t("tables.last_updated_at") }}</th>
                 </tr>
             </thead>
             <tbody>

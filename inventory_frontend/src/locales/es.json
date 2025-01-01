@@ -1,7 +1,112 @@
 {
-    "menu": {
-        "home": "inicio",
-        "inventories": "inventarios",
-        "help": "ayuda"
-    }
+    "welcome": "Bienvenido a inventario",
+    "sidebar": {
+        "home": "Inicio",
+        "logout": "Cerrar sesión"
+    },
+    "create": "Crear",
+    "create_inventory": "Crear un nuevo inventario",
+    "inventories": "Inventarios",
+    "no_inventories": "No hay inventarios",
+    "login_message": "Por favor, inicie sesión para continuar",
+    "date_group": {
+        "today": "Hoy",
+        "this week": "Esta semana",
+        "older": "Más antiguo"
+    },
+    "users": "Usuarios",
+    "inventory": "Inventario",
+    "audit-logs": "Registros de auditoría",
+    "deactivate": "Desactivar",
+    "mark_as_read": "Marcar como leído",
+    "greetings": {
+        "morning": "Buenos días",
+        "afternoon": "Buenas tardes",
+        "evening": "Buenas noches"
+    },
+    "continue_your_work": "Continúa tu trabajo en inventarios recientes",
+    "tables": {
+        "id": "ID",
+        "user": "Usuario",
+        "name": "Nombre",
+        "last_modified": "Última modificación en",
+        "user_id": "ID de usuario",
+        "email": "Correo electrónico",
+        "role": "Rol",
+        "joined_at": "Unido en",
+        "created_at": "Creado en",
+        "last_updated_at": "Última actualización en",
+        "action": "Acción",
+        "stock": "Stock",
+        "added_to_inventory_at": "Añadido al inventario en",
+        "last_stock_modified_at": "Última modificación de stock en",
+        "expiry_date": "Fecha de caducidad",
+        "status": "Estado",
+        "sent_at": "Enviado en"
+    },
+    "tooltip": {
+        "stockThresholdLimit": "Límite de umbral de stock",
+        "maxUsers": "Se alcanzó el número máximo de usuarios"
+    },
+    "buttons": {
+        "create": "Crear",
+        "invite": "Invitar",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "filter": "Filtrar",
+        "active": "Activo",
+        "clear": "Limpiar",
+        "apply": "Aplicar",
+        "cancel": "Cancelar",
+        "save_changes": "Guardar cambios"
+    },
+    "headers": {
+        "userManagement": "Gestión de usuarios",
+        "logs": "Registros de auditoría",
+        "invitations": "Invitaciones"
+    },
+    "user_management": {
+        "guide": "La gestión de usuarios dentro de un inventario sigue estrictas pautas para asegurar un funcionamiento fluido y responsabilidad. Cada inventario debe tener siempre al menos un administrador y el número total de usuarios no puede superar cinco. Si el administrador no está disponible o deja el cargo, un gerente puede asumir el rol de administrador, pero solo puede haber un gerente en cualquier momento. Los administradores no pueden degradarse a sí mismos, a menos que haya un gerente de respaldo para mantener el liderazgo. Además, un administrador no puede dejar el inventario si es el único usuario restante. Sin embargo, si es necesario, el administrador tiene la autoridad para eliminar todo el inventario, asegurando un control total sobre el ciclo de vida del inventario."
+    },
+    "product_management": {
+        "guide": "Ver y gestionar tus artículos de inventario, realizar un seguimiento de las cantidades de stock y ejecutar acciones de entrada y salida.",
+        "inbound": "Entrada",
+        "outbound": "Salida",
+        "not_found": "Producto no encontrado",
+        "filter_by_last_modified": "Filtrar por fecha de última modificación",
+        "ask_user_to_select": "Selecciona un rango de fechas para filtrar por la última fecha modificada.",
+        "start_date": "Fecha de inicio",
+        "end_date": "Fecha de finalización",
+        "search": "Buscar"
+    },
+    "logs": {
+        "guide": "Ver acciones recientes y asignaciones de roles."
+    },
+    "invitations": {
+        "guide": "Gestiona y visualiza las invitaciones enviadas a los usuarios."
+    },
+    "profile": {
+        "title": "Perfil",
+        "account_settings": "Configuración de cuenta",
+        "personal_info": "Información personal",
+        "security": "Seguridad",
+        "connected_accounts": "Cuentas conectadas",
+        "discord": "Discord",
+        "connected": "Conectado",
+        "deactivate_account": "Desactivar cuenta"
+    },
+    "no_notification": "No hay notificaciones",
+    "auth": {
+        "login": "Iniciar sesión",
+        "signup": "Registrarse",
+        "create_account": "Crear una cuenta",
+        "new_here": "¿Nuevo aquí?",
+        "forgot_password": "¿Olvidaste tu contraseña?",
+        "confirm_password": "Confirmar contraseña",
+        "already_have_account": "¿Ya tienes una cuenta?",
+        "please_enter_email": "Por favor ingresa tu dirección de correo electrónico",
+        "please_enter_password": "Por favor ingresa tu contraseña",
+        "please_confirm_password": "Por favor confirma tu contraseña"
+    },
+    "notAvailable": "No disponible"
 }

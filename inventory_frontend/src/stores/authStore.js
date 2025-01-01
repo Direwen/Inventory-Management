@@ -84,13 +84,14 @@ export const useAuthStore = defineStore('Auth', {
             }, "Failed to update the password");
         },
 
-        async logout() {
+        async logout(router) {
             const uiStore = useUiStore();
 
             return await uiStore.handleAsync(async () => {
                 await axiosInstance.post("/auth/logout");
                 this.removeUserData();
                 useAppStore().resetState();
+                router.push("/");
             }, "Failed to logout");
         },
 

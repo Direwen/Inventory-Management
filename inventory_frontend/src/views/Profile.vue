@@ -1,5 +1,5 @@
 <template>
-    <h3 class="text-2xl font-bold mb-4">Account Settings</h3>
+    <h3 class="text-2xl font-bold mb-4">{{ $t('profile.account_settings') }}</h3>
 
     <div class="w-full md:w-10/12 lg:w-8/12 mx-auto rounded p-6 space-y-8">
 
@@ -24,7 +24,7 @@
 
             <!-- Connected Accounts Section -->
             <div>
-                <h4 class="text-lg font-semibold mb-2">Connected Accounts</h4>
+                <h4 class="text-lg font-semibold mb-2">{{ $t('profile.connected_accounts') }}</h4>
                 <label class="input input-bordered flex items-center gap-2">
                     Discord
                     <input type="text" class="grow" placeholder="Connected" disabled />
