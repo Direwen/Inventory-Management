@@ -108,5 +108,9 @@
         "please_enter_password": "กรุณากรอกรหัสผ่านของคุณ",
         "please_confirm_password": "กรุณายืนยันรหัสผ่านของคุณ"
     },
-    "notAvailable": "ไม่สามารถใช้ได้"
+    "notAvailable": "ไม่สามารถใช้ได้",
+    "footer": {
+        "copyright": "ลิขสิทธิ์",
+        "rights": "สงวนลิขสิทธิ์โดย Inventory App"
+    }
 }

@@ -108,5 +108,9 @@
         "please_enter_password": "请输入密码",
         "please_confirm_password": "请确认密码"
     },
-    "notAvailable": "N/A"
+    "notAvailable": "N/A",
+    "footer": {
+        "copyright": "版权",
+        "rights": "版权所有 Inventory App"
+    }
 }

@@ -107,5 +107,9 @@
         "please_enter_password": "စကားဝှက်ထည့်ပါ",
         "please_confirm_password": "စကားဝှက်အတည်ပြုပါ"
     },
-    "notAvailable": "မရှိပါ"
+    "notAvailable": "မရှိပါ",
+    "footer": {
+        "copyright": "မူပိုင်ခွင့်",
+        "rights": "မူပိုင်ခွင့်များသည် Inventory App မှ ထားရှိသည်။"
+    }
 }

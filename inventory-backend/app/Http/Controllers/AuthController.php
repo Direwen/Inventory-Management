@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Exception;
+use Laravel\Socialite\Facades\Socialite;
 use Mail;
 use Str;
 
@@ -50,9 +51,11 @@ class AuthController extends Controller
 
             $user = User::withTrashed()->where('email', $details["email"])->first();
 
-            if (empty($user)) return $this->errorResponse("User not found");
+            if (empty($user))
+                return $this->errorResponse("User not found");
 
-            if ($user->trashed()) return $this->errorResponse("Please Reactivated the account first");
+            if ($user->trashed())
+                return $this->errorResponse("Please Reactivated the account first");
 
             if (!$user->hasVerifiedEmail()) {
 
@@ -61,10 +64,12 @@ class AuthController extends Controller
                 return $this->errorResponse("Please Verify the email first");
             }
 
-            if (!Auth::attempt([
-                "email" => $details["email"],
-                "password" => $details["password"]
-            ], $details["remember"] ?? false)) {
+            if (
+                !Auth::attempt([
+                    "email" => $details["email"],
+                    "password" => $details["password"]
+                ], $details["remember"] ?? false)
+            ) {
                 return $this->errorResponse("Wrong Credentials", 400);
             }
 
@@ -89,6 +94,74 @@ class AuthController extends Controller
             return $this->errorResponse($e->getMessage(), 500);
         }
     }
+
+    // Redirect Google Oauth
+    public function getRedirectLink(Request $request)
+    {
+
+        $link = $request->query('link');
+
+        $redirectUrl = Socialite::driver('google')
+            ->stateless()
+            ->redirect()
+            ->getTargetUrl();
+        return $this->successResponse(
+            data: $redirectUrl . ($link ? '?action=link' : ''),
+            message: "Google Oauth Redirect Link"
+        );
+    }
+
+    // Handle Google Auth Callback
+    public function handleThirdPartyCallback(Request $request)
+    {
+        try {
+            $thirdPartyUserData = Socialite::driver('google')->stateless()->user();
+            $user = User::withTrashed()->where('email', $thirdPartyUserData->getEmail())->first();
+
+            if (!$user) {
+                // If user is not created yet
+                $user = User::create([
+                    'name' => $thirdPartyUserData->getName(),
+                    'email' => $thirdPartyUserData->getEmail(),
+                    'google_id' => $thirdPartyUserData->getId(),
+                    'password' => null,
+                ]);
+                $user->markEmailAsVerified();
+                $user->save();
+
+            } elseif ($user->trashed()) {
+                // If user is already created and Deactivated
+                return $this->errorResponse("Account is deactivated. Please contact support.");
+            } elseif (!$user->hasVerifiedEmail()) {
+                 // If user is already created but not verified
+                $user->markEmailAsVerified();
+                $user->google_id = $thirdPartyUserData->getId();
+                $user->save();
+            } elseif ($user->google_id && $user->google_id !== $thirdPartyUserData->getId()) {
+                // If user is created and connected to a different Gmail Account
+                return $this->errorResponse("This email is linked to another Google account.");
+            } else {
+                // Update google_id if not already connected
+                $user->update([
+                    'google_id' => $thirdPartyUserData->getId()
+                ]);
+            }
+
+            Auth::login($user);
+            $token = $user->createToken('sessionToken')->plainTextToken;
+
+            return $this->successResponse(
+                data: [
+                    'token' => $token,
+                    'user' => $user
+                ],
+                message: "Successfully authenticated"
+            );
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
 
     // Verify email
     public function verify($userId, Request $request)
@@ -146,15 +219,16 @@ class AuthController extends Controller
             $user = User::withTrashed()->where('email', $details["email"])->first();
 
             //Make sure this user record is soft-deleted
-            if (!$user->trashed()) return $this->errorResponse("This User Account doesn't require the restoration");
-            
-            DB::transaction(function () use ($user)  {
+            if (!$user->trashed())
+                return $this->errorResponse("This User Account doesn't require the restoration");
+
+            DB::transaction(function () use ($user) {
                 $token = Str::random(10);
                 $user->update([
                     "reactivation_token" => $token,
                     "reactivation_token_expires_at" => now()->addMinutes(5)
                 ]);
-    
+
                 Mail::to($user->email)->send(new SendUserReactivationToken($user, $token));
             });
 

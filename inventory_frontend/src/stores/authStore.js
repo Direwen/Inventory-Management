@@ -10,7 +10,6 @@ export const useAuthStore = defineStore('Auth', {
     }),
     actions: {
         async login(email, password) {
-
             return await useUiStore().handleAsync(async () => {
                 const res = await axiosInstance.post("/auth/login", {
                     "email": email,
@@ -24,9 +23,7 @@ export const useAuthStore = defineStore('Auth', {
         },
 
         async signup(email, password, confirmPassword) {
-            const uiStore = useUiStore();
-
-            return await uiStore.handleAsync(async () => {
+            return await useUiStore().handleAsync(async () => {
                 await axiosInstance.post("/auth/signup", {
                     "email": email,
                     "password": password,
@@ -34,6 +31,33 @@ export const useAuthStore = defineStore('Auth', {
                 });
 
             }, "Failed to signup", true, false);
+        },
+
+        async getGoogleRedirectLink()
+        {
+            return await useUiStore().handleAsync(async () => {
+                const res = await axiosInstance.get("/auth/login/google");
+                window.location.href = res.data.data;
+
+            }, "Failed to signup", true, false);
+        },
+
+        async linkToGoogleAccount()
+        {
+            return await useUiStore().handleAsync(async () => {
+                const res = await axiosInstance.get("/auth/login/google?link=true");
+                window.location.href = res.data.data;
+
+            }, "Failed to signup", true, false);
+        },
+
+        async handleGoogleCallback(query)
+        {
+            return await useUiStore().handleAsync(async () => {
+                const res = await axiosInstance.post("/auth/login/google/callback", query);
+                this.saveUserData(res.data.data.user, res.data.data.token);
+                useAppStore().loadEssentialData();
+            }, "Failed to login", true, false);
         },
 
         async resendVerificationLink(email) {

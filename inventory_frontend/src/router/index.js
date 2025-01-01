@@ -11,6 +11,7 @@ import { useAppStore } from '../stores/appStore';
 import Invitations from '../views/Invitations.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import RestoreAccount from '../views/RestoreAccount.vue';
+import OauthCallback from '../views/OauthCallback.vue';
 
 const requireUnauthenticated = async (to, from, next) => {
   const authStore = useAuthStore();
@@ -88,6 +89,12 @@ const routes = [
     component: RestoreAccount,
     beforeEnter: requireUnauthenticated, // Ensure the user is not logged in
   },
+  {
+    path: '/callback/google',
+    name:  'OauthCallback',
+    component: OauthCallback,
+    beforeEnter: requireUnauthenticated
+  }
 ];
 
 

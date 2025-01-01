@@ -19,6 +19,12 @@ Route::prefix('auth')->group(function () {
     Route::post('/signup', [AuthController::class, 'signup'])->name('auth.signup');
     // Log in an existing user
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+    // Socialite Redirect
+    Route::get('/login/google', [AuthController::class, 'getRedirectLink'])
+            ->name('socialite.redirect');
+    // Socialite Callback
+    Route::post('/login/google/callback', [AuthController::class, 'handleThirdPartyCallback'])
+            ->name('socialite.callback');
 });
 
 // Email verification routes

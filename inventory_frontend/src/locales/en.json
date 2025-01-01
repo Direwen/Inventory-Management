@@ -108,5 +108,9 @@
         "please_enter_password": "Please enter your password",
         "please_confirm_password": "Please confirm your password"
     },     
-    "notAvailable": "N/A"
+    "notAvailable": "N/A",
+    "footer" : {
+        "copyright" : "Copyright",
+        "rights" : "All rights reserved by Inventory App"
+    }
 }
