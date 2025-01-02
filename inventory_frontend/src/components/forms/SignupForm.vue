@@ -34,8 +34,16 @@
             <button type="submit" class="btn w-full my-3">{{ $t('auth.create_account') }}</button>
         </form>
 
-        <p class="text-center text-sm my-0 cursor-pointer select-none">{{ $t('auth.already_have_account') }} <span
+        <section class="flex justify-between items-center">
+
+            <p class="text-sm my-0 cursor-pointer select-none">{{ $t('auth.already_have_account') }} <span
                 class="underline font-bold underline-offset-2" @click="toLoginForm">{{ $t('auth.login') }}</span></p>
+
+            <p class="text-sm my-0 cursor-pointer select-none font-bold underline underline-offset-2">
+                <router-link :to="{name: 'RestoreAccount'}">Recover Account</router-link>
+            </p>
+
+        </section>
     </div>
 </template>
 

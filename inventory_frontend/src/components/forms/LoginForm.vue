@@ -27,10 +27,10 @@
 
         <section class="flex justify-between items-center">
 
-            <p class="my-0 cursor-pointer select-none text-sm">{{ $t('auth.forgot_password') }} <span
+            <p class="my-0 cursor-pointer select-none text-sm">Have no account? <span
                 class="underline font-bold underline-offset-2" @click="toSignupForm">{{ $t('auth.signup') }}</span></p>
 
-            <span class="cursor-pointer text-sm select-none underline underline-offset-2" @click="uiStore.openModal(SendPswReset)">
+            <span class="cursor-pointer text-sm font-bold select-none underline underline-offset-2" @click="uiStore.openModal(SendPswReset)">
                 {{ $t('auth.forgot_password') }}
             </span>
 
