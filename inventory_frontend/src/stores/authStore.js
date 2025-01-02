@@ -33,8 +33,7 @@ export const useAuthStore = defineStore('Auth', {
             }, "Failed to signup", true, false);
         },
 
-        async getGoogleRedirectLink()
-        {
+        async getGoogleRedirectLink() {
             return await useUiStore().handleAsync(async () => {
                 const res = await axiosInstance.get("/auth/login/google");
                 window.location.href = res.data.data;
@@ -42,8 +41,7 @@ export const useAuthStore = defineStore('Auth', {
             }, "Failed to signup", true, false);
         },
 
-        async linkToGoogleAccount()
-        {
+        async linkToGoogleAccount() {
             return await useUiStore().handleAsync(async () => {
                 const res = await axiosInstance.get("/auth/login/google?link=true");
                 window.location.href = res.data.data;
@@ -51,13 +49,26 @@ export const useAuthStore = defineStore('Auth', {
             }, "Failed to signup", true, false);
         },
 
-        async handleGoogleCallback(query)
-        {
+        async unlinkToGoogleAccount() {
+            return await useUiStore().handleAsync(async () => {
+                const res = await axiosInstance.put("/user/unlink-google");
+                useAuthStore().user = res.data.data;
+            }, "Failed to signup", true, false);
+        },
+
+        async handleGoogleCallback(query) {
             return await useUiStore().handleAsync(async () => {
                 const res = await axiosInstance.post("/auth/login/google/callback", query);
-                this.saveUserData(res.data.data.user, res.data.data.token);
-                useAppStore().loadEssentialData();
-            }, "Failed to login", true, false);
+                const { user, token } = res.data.data;
+
+                if (token) {
+                    // Login successful (since a token is provided)
+                    this.saveUserData(user, token); // Save user info and token
+                    await useAppStore().loadEssentialData(); // Load essential data for the app
+                } else {
+                    useAuthStore().user = user;
+                }
+            }, "Failed to Handle Callback", true, false);
         },
 
         async resendVerificationLink(email) {
@@ -75,12 +86,12 @@ export const useAuthStore = defineStore('Auth', {
 
             if (localStorage.getItem('token') && !this.isActive) {
                 const uiStore = useUiStore();
-    
+
                 return await uiStore.handleAsync(async () => {
                     const res = await axiosInstance.get("/user");
-    
+
                     this.saveUserData(res.data.data);
-    
+
                 }, "failed to load user", true, false);
             }
         },
@@ -95,7 +106,7 @@ export const useAuthStore = defineStore('Auth', {
                 this.user.name = name;
             }, "Failed to update the name");
         },
-        
+
         async updatePsw(currentPsw, newPsw, newPswConfirmation) {
             const uiStore = useUiStore();
 
@@ -126,7 +137,7 @@ export const useAuthStore = defineStore('Auth', {
                 });
             }, "Failed to Send Reset Link");
         },
-       
+
         async resetPassword(token, email, password, confirmedPassword) {
             return await useUiStore().handleAsync(async () => {
                 await axiosInstance.post(`/reset-password`, {

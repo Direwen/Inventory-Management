@@ -27,13 +27,8 @@ class PasswordController extends Controller
         $details = $request->validated();
         $user = auth()->user();
 
-        // Prevent Google users from updating passwords
-        if (empty($user->password) && $user->google_id) {
-            return $this->errorResponse("Password updates are not allowed for Google login users.", 403);
-        }
-
         // Check if the old password matches
-        if (!empty($user->password) && !$this->matchPassword($details["old_password"], $user->password)) {
+        if ((!empty($user->password) && empty($details["old_password"])) && !$this->matchPassword($details["old_password"] ?? "", $user->password)) {
             return $this->errorResponse("Wrong Password", 403);
         }
 
@@ -51,7 +46,7 @@ class PasswordController extends Controller
 
         try {
     
-            Password::sendResetLink($details['email']);
+            Password::sendResetLink(['email' => $details['email']]);
     
             return $this->successResponse(
                 message: 'Password Reset Link has been sent'

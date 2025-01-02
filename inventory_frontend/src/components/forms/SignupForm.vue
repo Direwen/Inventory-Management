@@ -35,7 +35,7 @@
         </form>
 
         <p class="text-center text-sm my-0 cursor-pointer select-none">{{ $t('auth.already_have_account') }} <span
-                class="underline font-bold underline-offset-2" @click="toLoginForm">{{ $t('auth.create_account') }}</span></p>
+                class="underline font-bold underline-offset-2" @click="toLoginForm">{{ $t('auth.login') }}</span></p>
     </div>
 </template>
 

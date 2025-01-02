@@ -26,10 +26,19 @@
             <!-- Connected Accounts Section -->
             <div>
                 <h4 class="text-lg font-semibold mb-2">{{ $t('profile.connected_accounts') }}</h4>
-                <p>{{ authStore.user }}</p>
-                <section v-if="authStore.user.google_id" class="relative flex md:justify-center items-center py-3 px-2 rounded bg-base-200">
-                    <span class="uppercase font-medium">Google</span>
-                    <button class="absolute btn top-0 right-0 hover:text-red-900 px-1 md:px-2">
+
+                <!-- Check if user has linked Google account -->
+                <section v-if="authStore.user.google_id"
+                    class="relative flex md:justify-center items-center gap-2 py-3 px-2 shadow-xl bg-white rounded-full">
+
+
+                    <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="google" class="w-8 m-0 bg-white rounded-full shadow-xl">
+
+                    <span class="text-xs md:text-sm text-gray-500 font-semibold">Connected to Google</span>
+
+                    <!-- Button to unlink Google account -->
+                    <button v-if="authStore.user.google_id" @click="authStore.unlinkToGoogleAccount"
+                        class="absolute btn top-1 right-0 btn-ghost hover:bg-transparent text-base-300 hover:text-red-900 px-1 md:px-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                             <path fill-rule="evenodd"
                                 d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
@@ -38,7 +47,13 @@
                     </button>
                 </section>
 
-                <button v-else class="btn" @click="authStore.linkToGoogleAccount()">Connect</button>
+                <!-- Link or Unlink button based on Google ID -->
+                <button v-else  @click="authStore.linkToGoogleAccount" class="btn btn-block bg-white hover:bg-gray-300 rounded-full flex md:justify-center items-center gap-2 py-3 px-2 leading-none h-fit">
+                    <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="google" class="w-8 m-0 bg-white rounded-full">
+
+                    <span class="text-xs md:text-sm text-gray-500 font-semibold">Link Google Account</span>
+                </button>
+
             </div>
 
             <div class="divider"></div>

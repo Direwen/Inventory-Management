@@ -44,13 +44,24 @@ const validateInventory = async (to, from, next) => {
   }
 };
 
+const requireOauthFlow = (to, from, next) => {
+  // Check if the query has 'code' or 'state' (Google OAuth flow check)
+  if (to.query.code && to.query.state) {
+    // Proceed if the user is in the middle of the OAuth flow
+    next();
+  } else {
+    // Redirect to the login page or a page where users should go if they try to access this route directly
+    next('/');
+  }
+}
+
 const routes = [
   { path: '/', component: Home },
   { path: '/auth', component: Auth, beforeEnter: requireUnauthenticated },
   { path: '/profile', component: Profile },
-  { 
-    path: '/inventory/:id', 
-    name: 'Inventory', 
+  {
+    path: '/inventory/:id',
+    name: 'Inventory',
     redirect: to => {
       return { name: 'User-Management', params: to.params };
     },
@@ -59,17 +70,17 @@ const routes = [
       {
         path: 'user-management',
         name: 'User-Management',
-        component: UserManagement, 
+        component: UserManagement,
       },
       {
         path: 'product-management',
         name: 'Product-Management',
-        component: ProductManagement, 
+        component: ProductManagement,
       },
       {
         path: 'logs',
         name: 'Logs',
-        component: Logs, 
+        component: Logs,
       },
       {
         path: 'invitations',
@@ -91,9 +102,9 @@ const routes = [
   },
   {
     path: '/callback/google',
-    name:  'OauthCallback',
+    name: 'OauthCallback',
     component: OauthCallback,
-    beforeEnter: requireUnauthenticated
+    beforeEnter: requireOauthFlow
   }
 ];
 
@@ -107,7 +118,7 @@ const router = createRouter({
 // Global guard to clear active inventory when leaving inventory routes
 router.beforeEach((to, from, next) => {
   const appStore = useAppStore();
-  
+
   // If navigating away from inventory routes, clear activeInventory
   if (!to.path.startsWith('/inventory/')) {
     if (appStore.activeInventory) {

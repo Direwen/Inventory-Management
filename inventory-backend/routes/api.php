@@ -25,6 +25,7 @@ Route::prefix('auth')->group(function () {
     // Socialite Callback
     Route::post('/login/google/callback', [AuthController::class, 'handleThirdPartyCallback'])
             ->name('socialite.callback');
+
 });
 
 // Email verification routes
@@ -70,6 +71,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::delete('/delete', [UserController::class, 'destroy'])->name('user.destroy');
         // Update the user's password
         Route::put('/update-password', [PasswordController::class, 'update'])->name('password.update');
+        // Unlinking Social Account
+        Route::put('/unlink-google', [AuthController::class, 'unlinkGoogleAccount'])->name('auth.unlink_google');
     });
 
     // Inventory-related routes
