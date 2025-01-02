@@ -9,7 +9,7 @@
 
     <section v-else>
 
-      <h1 class="text-2xl lg:text-4xl font-semibold tracking-tighter mb-2">{{ $t(`greetings.${currentGreeting}`) }}, {{ authStore.user.name
+      <h1 class="text-2xl lg:text-4xl font-semibold tracking-tighter mb-4">{{ $t(`greetings.${currentGreeting}`) }}, {{ authStore.user.name
         ??
         authStore.user.email }}
       </h1>

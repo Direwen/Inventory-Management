@@ -12,6 +12,7 @@ import Invitations from '../views/Invitations.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import RestoreAccount from '../views/RestoreAccount.vue';
 import OauthCallback from '../views/OauthCallback.vue';
+import NotFound from '../views/NotFound.vue';
 
 const requireUnauthenticated = async (to, from, next) => {
   const authStore = useAuthStore();
@@ -105,6 +106,12 @@ const routes = [
     name: 'OauthCallback',
     component: OauthCallback,
     beforeEnter: requireOauthFlow
+  },
+  // Catch-all route for undefined paths
+  { 
+    path: '/:pathMatch(.*)*', 
+    name: 'NotFound', 
+    component: NotFound 
   }
 ];
 
