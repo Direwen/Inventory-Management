@@ -63,8 +63,16 @@
                 </p>
             </li>
 
-            <li v-if="appStore.noti" class="flex items-end">
-                <button class="btn text-gray-500" @click="appStore.markNotificationsAsRead()">
+            <li class="flex flex-row justify-between items-center">
+                <button class="btn btn-circle" :class="{'animate-spin': notiFetching}" @click="refreshNoti" :disabled="notiFetching">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path fill-rule="evenodd"
+                            d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
+                            clip-rule="evenodd" />
+                    </svg>
+
+                </button>
+                <button v-if="appStore.noti" class="btn text-gray-500" @click="appStore.markNotificationsAsRead()">
                     {{ $t("mark_as_read") }}
                 </button>
             </li>
@@ -73,15 +81,22 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useAppStore } from '../../stores/appStore';
 import { useUiStore } from '../../stores/uiStore';
 
 const appStore = useAppStore();
 const uiStore = useUiStore();
+const notiFetching = ref(false);
 
 
 const notiCount = computed(() =>
     (appStore.noti ? appStore.noti.length : 0) + (appStore.receivedInvitaions ? appStore.receivedInvitaions.length : 0)
 );
+
+const refreshNoti = async () => {
+    notiFetching.value = true;
+    await appStore.loadNotifications()
+    notiFetching.value = false;
+}
 </script>
