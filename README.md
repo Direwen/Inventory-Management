@@ -1,31 +1,37 @@
-# Inventory
+# Inventory Management 📦
 
-"Inventory" is a web application that allows users to efficiently manage inventories with user roles and permissions. 
+Inventory Management is a web application that allows users to efficiently manage inventories with user roles and permissions. 
 
 **Features:**
 
-* **User Roles and Inventory Control:**
-    * Create inventories and manage stock as an admin.
-    * Invite users by email (up to 4 invitees).
-    * Each inventory requires:
-        * 1 Admin
-        * 1 Manager
-        * Up to 3 Employees
-* **Stock Management and Notifications:**
-    * Create, manage, and track products.
-    * Low stock notifications.
-    * Stock inbound and outbound control.
-* **Audit Logs:** Track user activities.
-* **Authentication and Recovery:**
-    * Traditional login or Google authentication.
-    * Password recovery and account deactivation.
-* **UI Features:**
-    * Light/Dark mode.
-    * Localization (English, Chinese, Spanish, Thai, Burmese).
-    * Filtering and search in stock management.
-* **Scalability and Extendibility:**
-    * Observer Classes for automated processes.
-    * Trait usage to extend Laravel functionality.
+* **User Roles and Inventory Control 🧑‍🤝‍🧑**
+  * Create inventories and manage stock as an admin  👑
+  * Invite users by email (up to 4 invitees) 📧
+  * Each inventory requires:
+    * 1 Admin
+    * 1 Manager
+    * Up to 3 Employees
+
+* **Stock Management and Notifications 📦🔔**
+  * Create, manage, and track products. 🏷️
+  * Low stock notifications. 🚨
+  * Stock inbound and outbound control. 🚚
+
+* **Audit Logs 📃**
+  * Track user activities for transparency and oversight. 👀
+
+* **Authentication and Recovery 🔐**
+  * Traditional login or Google authentication. 🔑
+  * Password recovery and account deactivation. 🔐
+
+* **UI Features ✨**
+  * Light/Dark mode support. 🌗
+  * Localization (English, Chinese, Spanish, Thai, Burmese). 🌐
+  * Filtering and search in stock management. 🔍
+
+* **Scalability and Extendibility 🚀**
+  * Observer Classes for handling automated processes. 🤖
+  * Trait usage to extend Laravel functionality. 💪
 
 **Technologies Used:**
 
