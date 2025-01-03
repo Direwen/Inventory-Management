@@ -52,6 +52,9 @@ Inventory Management is a web application that allows users to efficiently manag
 * Middleware
 * Advanced authentication flows with Google (Socialite)
 
+# ERD
+![Alt text](https://github.com/Direwen/Inventory-Management/blob/main/img-for-readme/erd.png?raw=true)
+
 # Home Page
 ![Alt text](https://github.com/Direwen/Inventory-Management/blob/main/img-for-readme/home-dark.png?raw=true)
 
